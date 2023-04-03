@@ -1,0 +1,32 @@
+{
+  "name": "2023-it1-nodejs-small-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quanghvvmo/2023-it1-nodejs-small-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/quanghvvmo/2023-it1-nodejs-small-project/issues"
+  },
+  "homepage": "https://github.com/quanghvvmo/2023-it1-nodejs-small-project#readme",
+  "dependencies": {
+    "chai": "^4.3.7",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mocha": "^10.2.0",
+    "mysql2": "^3.2.0",
+    "nodemon": "^2.0.22",
+    "sequelize": "^6.30.0",
+    "umzug": "^2.2.0",
+    "uuid": "^9.0.0"
+  }
+}
