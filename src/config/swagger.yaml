@@ -1,0 +1,49 @@
+swagger: "2.0"
+info:
+    description: "API for adding a new user"
+    version: "1.0.0"
+    title: "Add User API"
+host: "localhost:8080"
+basePath: "/api/v1"
+schemes:
+    - "http"
+consumes:
+    - "application/json"
+produces:
+    - "application/json"
+paths:
+    /users:
+        post:
+            summary: "Add a new user"
+            parameters:
+                - name: "body"
+                  in: "body"
+                  required: true
+                  schema:
+                      type: "object"
+                      properties:
+                          username:
+                              type: "string"
+                              example: "johnsmith"
+                          password:
+                              type: "string"
+                              example: "password123"
+                          age:
+                              type: "integer"
+                              example: 30
+                          email:
+                              type: "string"
+                              example: "johnsmith@example.com"
+                          phone:
+                              type: "string"
+                              example: "123-456-7890"
+                          address:
+                              type: "string"
+                              example: "123 Main St."
+            responses:
+                "200":
+                    description: "User added successfully"
+                "400":
+                    description: "Invalid request body"
+                "409":
+                    description: "User already exists"
