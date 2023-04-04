@@ -2,7 +2,7 @@ import express from "express";
 import userController from "../controller/userController"
 import customerController from "../controller/customerController"
 import orderController from "../controller/orderController"
-//import productController from "../controller/productController"
+import productController from "../controller/productController"
 
 let router = express.Router();
 
@@ -36,17 +36,16 @@ let initWebRoute = (app) => {
     router.delete('/api/v1/order/:id', orderController.hardDeleteOrder)
     router.patch('/api/v1/order/:id/delete', orderController.softDeleteOrder)
 
-    /*
-    
-    
-    
-    
-    
-    
-
+    //Product Route
     router.post('/api/v1/product', productController.createProduct)
     router.get('/api/v1/product', productController.getListProduct)
-    */
+    router.get('/api/v1/product/:id', productController.getProductbyId)
+    router.delete('/api/v1/product/:id', productController.hardDeleteProduct)
+    router.patch('/api/v1/product/:id/delete', productController.softDeleteProduct)
+    router.put('/api/v1/product', productController.updateProduct)
+
+    //Oderdetail Route
+
 
     return app.use("/", router);
 }

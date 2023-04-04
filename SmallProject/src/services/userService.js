@@ -200,6 +200,16 @@ let deleteUserById = (userId) => {
                 await db.User.destroy({
                     where: { id: userId }
                 });
+                let ownCustomer = await db.Customer.findOne({
+                    where: {
+                        userid: userId
+                    },
+                    raw: false
+                })
+                if (ownCustomer) {
+                    ownCustomer.userid = null;
+                    await ownCustomer.save();
+                }
                 resolve({
                     errCode: 0,
                     errMsg: 'The user is deleted',

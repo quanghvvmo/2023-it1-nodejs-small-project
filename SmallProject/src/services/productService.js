@@ -1,13 +1,14 @@
+import db from "../config/database"
 import { v4 as uuidv4 } from "uuid";
-import db from "../models/index";
 
-let createOrder = (data) => {
+let createProduct = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             let newId = uuidv4();
-            await db.Order.create({
+            await db.Product.create({
                 id: newId,
-                customerid: data.customerid,
+                name: data.name,
+                description: data.description,
                 price: data.price,
                 tax: data.tax,
                 discount: data.discount,
@@ -18,26 +19,27 @@ let createOrder = (data) => {
             })
             resolve({
                 errCode: 0,
-                errMsg: 'Add new Order sucessfull!'
+                errMsg: "Creating product succesfull!"
             })
         } catch (error) {
-            reject(error)
+            reject(error);
         }
     })
 }
-let getAllOrder = (page) => {
+
+let getListProduct = (page) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let orders = {}
+            let products = {}
             if (!page) {
-                orders = await db.Order.findAll({
+                products = await db.Product.findAll({
                     where: {
                         isDeleted: 0
                     }
                 });
             } else {
-                const offset = (parseInt(page) - 1) * 5 // Set default 1 page has 5 orders, With 1 page we skip 5 objects
-                orders = await db.Order.findAndCountAll({
+                const offset = (parseInt(page) - 1) * 5 // Set default 1 page has 5 products, With 1 page we skip 5 objects
+                orders = await db.Product.findAndCountAll({
                     limit: 5,
                     offset: offset,
                     where: {
@@ -56,73 +58,73 @@ let getAllOrder = (page) => {
     })
 }
 
-let getOrderbyId = (orderId) => {
+let getProductbyId = (productId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let order = await db.Order.findOne({
+            let product = await db.Product.findOne({
                 where: {
-                    id: orderId
+                    id: productId
                 },
                 raw: false
             });
-            if (order) {
+            if (product) {
                 resolve({
                     errCode: 0,
                     errMsg: 'Ok',
-                    order
+                    product
                 })
             } else resolve({
                 errCode: -1,
-                errMsg: 'Not found order'
+                errMsg: 'Not found product'
             })
         } catch (error) {
             reject(error);
         }
     })
 }
-let hardDeleteOrder = (orderId) => {
+let hardDeleteProduct = (productId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let order = await db.Order.findOne({
+            let product = await db.Product.findOne({
                 where: {
-                    id: orderId
+                    id: productId
                 }
             })
-            if (order) {
-                await db.Order.destroy({
-                    where: { id: orderId }
+            if (product) {
+                await db.Product.destroy({
+                    where: { id: productId }
                 });
                 resolve({
                     errCode: 0,
-                    errMsg: 'The order is deleted',
+                    errMsg: 'The product is deleted',
                 })
             } else resolve({
                 errCode: -1,
-                errMsg: 'Not found order'
+                errMsg: 'Not found product'
             })
         } catch (error) {
             reject(error);
         }
     })
 }
-let softDeleteOrder = (orderId) => {
+let softDeleteProduct = (productId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let order = await db.Order.findOne({
+            let product = await db.Product.findOne({
                 where: {
-                    id: orderId
+                    id: productId
                 },
                 raw: false
             })
-            if (order) {
-                if (order.isDeleted === true) {
+            if (product) {
+                if (product.isDeleted === true) {
                     resolve({
                         errCode: 1,
-                        errMsg: "The order is already Soft Deleted"
+                        errMsg: "The product is already Soft Deleted"
                     })
                 } else {
-                    order.isDeleted = 1;
-                    await order.save();
+                    product.isDeleted = 1;
+                    await product.save();
                     resolve({
                         errCode: 0,
                         errMsg: 'The order is soft deleted',
@@ -130,67 +132,58 @@ let softDeleteOrder = (orderId) => {
                 }
             } else resolve({
                 errCode: -1,
-                errMsg: 'Not found order'
+                errMsg: 'Not found product'
             })
         } catch (error) {
             reject(error);
         }
     })
 }
-
-let updateOrder = (data) => {
+let updateProduct = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let order = await db.Order.findOne({
+            let product = await db.Product.findOne({
                 where: {
                     id: data.id
                 },
                 raw: false
             })
-            if (!order) {
+            if (!product) {
                 resolve({
                     errCode: -1,
-                    errMsg: "Order not found!"
+                    errMsg: "Product not found!"
                 })
             } else {
-                let validCustomer = await db.Customer.findOne({
-                    where: {
-                        id: data.customerid
-                    }
+                product.name = data.name,
+                    product.description = data.description,
+                    product.price = data.price,
+                    product.tax = data.tax,
+                    product.discount = data.discount,
+                    product.totalPrice = data.totalPrice,
+                    product.isDeleted = data.isDeleted,
+                    product.createBy = data.createBy,
+                    product.updateBy = data.updateBy
+                await product.save();
+                resolve({
+                    errCode: 0,
+                    errMsg: "Updating succesfull!"
                 })
-                if (validCustomer) {
-                    order.customerid = data.customerid,
-                        order.price = data.price,
-                        order.tax = data.tax,
-                        order.discount = data.discount,
-                        order.totalPrice = data.totalPrice,
-                        order.isDeleted = data.isDeleted,
-                        order.createBy = data.createBy,
-                        order.updateBy = data.updateBy
-                    await order.save();
-                    resolve({
-                        errCode: 0,
-                        errMsg: "Updating succesfull!"
-                    })
-                } else {
-                    resolve({
-                        errCode: 1,
-                        errMsg: "Invalid Customer!"
-                    })
-                }
 
+                resolve({
+                    errCode: 1,
+                    errMsg: "Invalid Customer!"
+                })
             }
         } catch (error) {
             reject(error);
         }
     })
 }
-
 module.exports = {
-    createOrder: createOrder,
-    getAllOrder: getAllOrder,
-    getOrderbyId: getOrderbyId,
-    hardDeleteOrder: hardDeleteOrder,
-    softDeleteOrder: softDeleteOrder,
-    updateOrder: updateOrder
+    createProduct: createProduct,
+    getListProduct: getListProduct,
+    getProductbyId: getProductbyId,
+    hardDeleteProduct: hardDeleteProduct,
+    softDeleteProduct: softDeleteProduct,
+    updateProduct: updateProduct
 }

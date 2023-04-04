@@ -92,7 +92,11 @@ let updateCustomer = async (req, res) => {
         return res.status(404).json(result);
     } else if (result.errCode === 1) {
         return res.status(400).json(result);
-    } else return res.status(200).json(result)
+    } else if (result.errCode === 2) {
+        return res.status(400).json(result);
+    } else {
+        return res.status(200).json(result)
+    }
 };
 
 module.exports = {

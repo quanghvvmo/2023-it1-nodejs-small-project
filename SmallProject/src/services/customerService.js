@@ -154,6 +154,18 @@ let deleteCustomer = (customerId) => {
                 await db.Customer.destroy({
                     where: { id: customerId }
                 });
+                let ownOrder = await db.Order.findAll({
+                    where: {
+                        customerid: customerId
+                    },
+                    raw: false
+                })
+                if (ownOrder && ownOrder.length > 0) {
+                    for (let i = 0; i < ownOrder.length; i++) {
+                        ownOrder[i].customerid = null;
+                        await ownOrder[i].save();
+                    }
+                }
                 resolve({
                     errCode: 0,
                     errMsg: 'The customer is deleted',
@@ -170,6 +182,7 @@ let deleteCustomer = (customerId) => {
 let updateCustomer = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
+            console.log(data);
             let duplicateUser = await db.Customer.findOne({
                 where: {
                     id: data.userid
@@ -181,28 +194,39 @@ let updateCustomer = (data) => {
                     errMsg: "The User is already have Customer!"
                 })
             } else {
-                let customer = await db.Customer.findOne({
+                let validUser = await db.User.findOne({
                     where: {
-                        id: data.id
-                    },
-                    raw: false
+                        id: data.userid
+                    }
                 })
-                if (customer) {
-                    customer.userid = data.userid,
-                        customer.paymentMethod = data.paymentMethod,
-                        customer.isActive = data.isActive
-                    await customer.save();
-                    resolve({
-                        errCode: 0,
-                        errMsg: "Updating customer succesfull!"
+                if (validUser) {
+                    let customer = await db.Customer.findOne({
+                        where: {
+                            id: data.id
+                        },
+                        raw: false
                     })
+                    if (customer) {
+                        customer.userid = data.userid,
+                            customer.paymentMethod = data.paymentMethod,
+                            customer.isActive = data.isActive
+                        await customer.save();
+                        resolve({
+                            errCode: 0,
+                            errMsg: "Updating customer succesfull!"
+                        })
+                    } else {
+                        resolve({
+                            errCode: -1,
+                            errMsg: "Customer not found!"
+                        })
+                    }
                 } else {
                     resolve({
-                        errCode: -1,
-                        errMsg: "Customer not found!"
+                        errCode: 2,
+                        errMsg: `User isn't exsit!`
                     })
                 }
-
             }
         } catch (error) {
             reject(error);
