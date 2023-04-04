@@ -15,10 +15,12 @@ export default (sequelize) => {
         isActive: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            defaultValue: 1,
         },
         isDeleted: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            defaultValue: 0,
         },
     });
 

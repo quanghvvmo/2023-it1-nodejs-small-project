@@ -1,13 +1,21 @@
 import Joi from "joi";
 import { USERNAME_REGEX, EMAIL_REGEX } from "../_utils/regex_validation.js";
 
-const createSchema = Joi.object({
+const createUserSchema = Joi.object({
     username: Joi.string().required().pattern(USERNAME_REGEX),
     email: Joi.string().email().pattern(EMAIL_REGEX),
     password: Joi.string().required(),
+    age: Joi.number().required(),
+    phone: Joi.string(),
+    address: Joi.string(),
+});
+
+const updateUserSchema = Joi.object({
+    email: Joi.string().email().pattern(EMAIL_REGEX),
+    password: Joi.string(),
     age: Joi.number(),
     phone: Joi.string(),
     address: Joi.string(),
 });
 
-export { createSchema };
+export { createUserSchema, updateUserSchema };

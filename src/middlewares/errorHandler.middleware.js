@@ -14,7 +14,7 @@ const { AggregateError, ValidationError, ForeignKeyConstraintError } = sequelize
  */
 export const handler = (err, req, res) => {
     const responseError = {
-        code: err.status,
+        code: err.status || httpStatus.INTERNAL_SERVER_ERROR,
         message: err.message || httpStatus[err.status],
         errors: err.errors,
         stack: err.stack,
