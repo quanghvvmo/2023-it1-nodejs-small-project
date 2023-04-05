@@ -54,7 +54,7 @@ const User = sequelize.define('User', {
 });
 
 User.associations = (models) => {
-    User.hasOne(models.Customer, { foreignKey: {
+    User.hasMany(models.Customer, { foreignKey: {
         name: 'userId',
         allowNull: false,
         unique: true,

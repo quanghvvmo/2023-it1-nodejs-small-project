@@ -1,12 +1,21 @@
 const { User } = require('../models/User');
+const { Customer } = require('../models/Customer');
 
 class UserService {
     async createUser(data) {
         try {
-            const user = User.create({
+            const user = await User.create({
                 ...data
             });
-            return user;
+            const userId = user.id;
+            const customer = await Customer.create({
+                userId,
+                isActive: 1
+            });
+            return {
+                user,
+                customer
+            };
         } catch (error) {
             throw new Error('Failed to create user');
         }
@@ -15,7 +24,7 @@ class UserService {
     async loginUser(data) {
         try {
             const username = data.username;
-            const user = User.findOne({ 
+            const user = await User.findOne({ 
                 where: { username }
             });
             return user;
@@ -41,12 +50,38 @@ class UserService {
             const rowsDeleted = await User.destroy({
                 where: { id }
             });
+            await Customer.destroy({ where: { userId: id }});
             return rowsDeleted;
         } catch (error) {
             throw new Error('Failed to delete user');
         }
     }
 
+    async getListUsers(page, limit) {
+        try {
+            const offset = (page - 1) * limit;
+            const users = await User.findAll({
+                limit,
+                offset,
+                include: [{ model: Customer, where: { userId: Sequelize.col('User.id') } }]
+            });
+            return users;
+        } catch (error) {
+            throw new Error('Failed to get list of users');
+        }
+    }
+
+    async getUserDetail(id) {
+        try {
+            const user = await User.findByPk(id);
+            if(!user) {
+                throw new Error('User not exists');
+            }
+            return user;
+        } catch (error) {
+            throw new Error(`Failed to get an user - ${id}`);
+        }
+    }
 }
 
 module.exports = new UserService();

@@ -1,6 +1,5 @@
 const userService = require('../services/userService');
 const { User } = require('../models/User');
-const { v4: uuidv4 } = require('uuid');
 
 class UserController {
     async createUser(req, res) {
@@ -55,10 +54,31 @@ class UserController {
             if(!user) {
                 return res.status(404).json({ message: 'User not existed' });
             }
-            const deleteUser = await userService.deleteUser(id);
-            if(deleteUser) {
-                res.status(200).json({ message: `Deleted user - ${ id }` });
-            } 
+            await userService.deleteUser(id);
+            return res.status(200).json({ message: `Deleted user - ${ id }` });
+        } catch (error) {
+            return res.status(500).json(error);
+        }
+    }
+
+    async getListUsers(req, res) {
+        try {
+            const { page, limit } = req.query;
+            if (page <= 0 || limit <= 0) {
+                return res.status(404).json({ message: "Parameters aren't accepted" });
+            }
+            const users = await userService.getListUsers(page, limit);
+            return res.status(200).json(users);
+        } catch (error) {
+            return res.status(500).json(error);
+        }
+    }
+
+    async getUserDetail(req, res) {
+        try {
+            const { id } = req.params;
+            const user = await userService.getUserDetail(id);
+            return res.status(200).json(user);
         } catch (error) {
             return res.status(500).json(error);
         }
