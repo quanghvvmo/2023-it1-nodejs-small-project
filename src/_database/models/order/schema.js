@@ -9,7 +9,10 @@ module.exports = {
         type:Sequelize.STRING(36),
         allowNull:false,
         primaryKey:true,
-        defaultValue: Sequelize.UUIDV1
+        references:{
+            model:'user',
+            key:'id'
+        }
     },
     price:{
         type:Sequelize.DOUBLE,

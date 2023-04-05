@@ -7,11 +7,11 @@ module.exports = class User extends BaseModel {
     static modelName = 'user';
     static schema = require('./schema')
     static include = [
-        // {
-        //     model: Customer,
-        //     as:'customer',
-        //     required: true
-        // }
+        {
+            model: Customer,
+            as:'customer',
+            required: true
+        }
     ]
     static associate(models){
         this.hasOne(models.Customer,{foreignKey: 'customerId',targetKey:'id', as:'customer'})
