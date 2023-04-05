@@ -10,7 +10,7 @@ const getToken = (req) => {
     return "";
 };
 
-export async function authJWT(req, res, next) {
+const authJWT = async (req, res, next) => {
     const token = getToken(req);
 
     if (!token) {
@@ -21,14 +21,16 @@ export async function authJWT(req, res, next) {
         if (error) {
             return res.status(httpStatus.UNAUTHORIZED).json("Failed to authenticate token!");
         } else {
-            const userId = decoded.id;
+            const id = decoded.id;
 
             req.user = {
-                userId,
+                id,
                 /// ... join more fields
             };
 
             return next();
         }
     });
-}
+};
+
+export default authJWT;

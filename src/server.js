@@ -20,7 +20,7 @@ app.use(morgan(config.morgan_format));
 
 const initService = () => {
     console.log("Init - Register services.");
-    app.use(routers);
+    app.use("/api/v1", routers);
 
     // Init api documents
     app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));

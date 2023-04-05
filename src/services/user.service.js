@@ -1,8 +1,23 @@
+import jwt from "jsonwebtoken";
+import config from "../config/index.js";
 import APIError from "../helper/apiError.js";
 import httpStatus from "http-status";
 import sequelize from "../models/index.js";
 
 const { User, Customer } = sequelize.models;
+
+const login = async (payload) => {
+    const user = await User.findOne({ where: { username: payload.username } });
+    if (!user) {
+        throw new APIError({ message: "Username doesn't exist !", status: httpStatus.NOT_FOUND });
+    }
+
+    if (user.password !== payload.password) {
+        throw new APIError({ message: "Incorrect password !", status: httpStatus.UNAUTHORIZED });
+    }
+
+    return jwt.sign({ id: user.id }, config.token_secret, { expiresIn: config.token_expiry });
+};
 
 const addUser = async (payload) => {
     const existingUser = await User.findOne({ where: { username: payload.username } });
@@ -85,6 +100,7 @@ const hardDeleteUser = async (userId) => {
 };
 
 export {
+    login,
     addUser,
     getUserDetail,
     getListUsers,

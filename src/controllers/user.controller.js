@@ -1,4 +1,5 @@
 import {
+    login,
     addUser,
     getUserDetail,
     getListUsers,
@@ -8,7 +9,21 @@ import {
     hardDeleteUser,
 } from "../services/user.service.js";
 import httpStatus from "http-status";
-import { createUserSchema, updateUserSchema } from "../validations/user.validation.js";
+import { createUserSchema, updateUserSchema, loginSchema } from "../validations/user.validation.js";
+
+const loginController = async (req, res, next) => {
+    try {
+        const { error, value } = loginSchema.validate(req.body);
+        if (error) {
+            return res.status(httpStatus.BAD_REQUEST).json(error.details[0].message);
+        }
+
+        const token = await login(value);
+        return res.status(httpStatus.OK).json({ token });
+    } catch (error) {
+        next(error);
+    }
+};
 
 const addUserController = async (req, res, next) => {
     try {
@@ -90,6 +105,7 @@ const hardDeleteUserController = async (req, res, next) => {
 };
 
 export {
+    loginController,
     addUserController,
     getUserDetailController,
     getListUsersController,

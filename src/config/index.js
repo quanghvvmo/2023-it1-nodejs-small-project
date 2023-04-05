@@ -22,7 +22,7 @@ const configs = {
 
         // Security
         token_secret: process.env.TOKEN_SECRET || "ITSASECRET",
-        token_expiry: process.env.TOKEN_EXPIRY || 60 * 60 * 24 * 3, // Expiry day for 3 days.
+        token_expiry: process.env.TOKEN_EXPIRY || "1d",
     },
     development: {
         morgan_format:

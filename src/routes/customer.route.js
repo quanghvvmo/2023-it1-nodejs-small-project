@@ -7,17 +7,18 @@ import {
     hardDeleteCustomerController,
     softDeleteCustomerController,
 } from "../controllers/customer.controller.js";
+import authJWT from "../middlewares/auth.middleware.js";
 
 const customerRouter = express.Router();
 
-customerRouter.get("/api/v1/customers", getCustomersController);
-customerRouter.get("/api/v1/customers/:id", getCustomerController);
+customerRouter.get("/customers", getCustomersController);
+customerRouter.get("/customers/:id", authJWT, getCustomerController);
 
-customerRouter.post("/api/v1/customers", createCustomerController);
+customerRouter.post("/customers", createCustomerController);
 
-customerRouter.put("/api/v1/customers/:id", updateCustomerController);
+customerRouter.put("/customers/:id", updateCustomerController);
 
-customerRouter.delete("/api/v1/customers/:id/soft", softDeleteCustomerController);
-customerRouter.delete("/api/v1/customers/:id/hard", hardDeleteCustomerController);
+customerRouter.delete("/customers/:id/soft", softDeleteCustomerController);
+customerRouter.delete("/customers/:id/hard", hardDeleteCustomerController);
 
 export default customerRouter;

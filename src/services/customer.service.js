@@ -5,7 +5,7 @@ import sequelize from "../models/index.js";
 const { User, Customer } = sequelize.models;
 
 const addCustomer = async (payload) => {
-    const user = await User.findOne({ where: { id: payload.userId } });
+    const user = await User.findOne({ where: { id: payload.UserId } });
     if (!user) {
         throw new APIError({ message: "User not found !", status: httpStatus.NOT_FOUND });
     }
