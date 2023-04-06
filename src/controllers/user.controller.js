@@ -10,6 +10,7 @@ import {
 } from "../services/user.service.js";
 import httpStatus from "http-status";
 import { createUserSchema, updateUserSchema, loginSchema } from "../validations/user.validation.js";
+import config from "../config/index.js";
 
 const loginController = async (req, res, next) => {
     try {
@@ -55,6 +56,8 @@ const updateUserController = async (req, res, next) => {
 
 const getUserDetailController = async (req, res, next) => {
     try {
+        console.log(req.params.id);
+
         const user = await getUserDetail(req.params.id);
         return res.status(httpStatus.OK).json(user);
     } catch (error) {
@@ -64,13 +67,14 @@ const getUserDetailController = async (req, res, next) => {
 
 const getListUsersController = async (req, res, next) => {
     try {
-        const index = parseInt(req.query.index);
-        const size = parseInt(req.query.size);
-        if (isNaN(index) || isNaN(size) || index <= 0 || size <= 0) {
-            return res.status(httpStatus.BAD_REQUEST).json("index or size is invalid");
+        let pageIndex = parseInt(req.query.pageIndex);
+        let pageSize = parseInt(req.query.pageSize);
+        if (isNaN(pageIndex) || isNaN(pageSize) || pageIndex <= 0 || pageSize <= 0) {
+            pageIndex = config.default_index_pagination;
+            pageSize = config.default_size_pagination;
         }
 
-        const users = await getListUsers(index, size);
+        const users = await getListUsers(pageIndex, pageSize);
         return res.status(httpStatus.OK).json(users);
     } catch (error) {
         next(error);

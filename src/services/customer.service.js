@@ -1,8 +1,9 @@
 import APIError from "../helper/apiError.js";
 import httpStatus from "http-status";
 import sequelize from "../models/index.js";
+import { ApiDataResponse, ApiPaginatedResponse } from "../helper/apiResponse.js";
 
-const { User, Customer } = sequelize.models;
+const { User, Customer, Order } = sequelize.models;
 
 const addCustomer = async (payload) => {
     const user = await User.findOne({ where: { id: payload.UserId } });
@@ -12,11 +13,11 @@ const addCustomer = async (payload) => {
 
     const newCustomer = await Customer.create(payload);
 
-    return newCustomer.id;
+    return new ApiDataResponse(httpStatus.CREATED, "create success", newCustomer);
 };
 
 const getCustomerDetail = async (customerId) => {
-    const customer = await Customer.findOne({ where: { id: customerId } });
+    const customer = await Customer.findOne({ include: [Order], where: { id: customerId } });
     if (!customer) {
         throw new APIError({ message: "Customer not found !", status: httpStatus.NOT_FOUND });
     }
@@ -47,19 +48,19 @@ const updateCustomer = async (customerId, payload) => {
         throw new APIError({ message: "Customer not found", status: httpStatus.NOT_FOUND });
     }
 
-    return updatedCustomer.id;
+    return new ApiDataResponse(httpStatus.OK, "update success", updatedCustomer);
 };
 
 const softDeleteCustomer = async (customerId) => {
-    const updatedCustomer = await Customer.update(
+    const deletedCustomer = await Customer.update(
         { isDeleted: true },
         { where: { id: customerId } }
     );
-    if (!updatedCustomer) {
+    if (!deletedCustomer) {
         throw new APIError({ message: "Customer not found", status: httpStatus.NOT_FOUND });
     }
 
-    return updatedCustomer.id;
+    return new ApiDataResponse(httpStatus.OK, "soft delete success", deletedCustomer);
 };
 
 const hardDeleteCustomer = async (customerId) => {
@@ -68,7 +69,7 @@ const hardDeleteCustomer = async (customerId) => {
         throw new APIError({ message: "Customer not found", status: httpStatus.NOT_FOUND });
     }
 
-    return customerId;
+    return new ApiDataResponse(httpStatus.OK, "hard delete success", deletedCustomer);
 };
 
 export {

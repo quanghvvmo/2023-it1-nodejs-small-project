@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 
 export default (sequelize) => {
-    const Customer = sequelize.define("Customer", {
+    const columns = {
         id: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -22,7 +22,7 @@ export default (sequelize) => {
             allowNull: false,
             defaultValue: 0,
         },
-    });
+    };
 
-    return Customer;
+    return sequelize.define("Customer", columns);
 };

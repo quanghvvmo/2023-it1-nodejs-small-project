@@ -8,6 +8,7 @@ import {
     hardDeleteCustomer,
 } from "../services/customer.service.js";
 import { createCustomerSchema, updateCustomerSchema } from "../validations/customer.validation.js";
+import config from "../config/index.js";
 
 const createCustomerController = async (req, res, next) => {
     try {
@@ -37,13 +38,14 @@ const getCustomerController = async (req, res, next) => {
 
 const getCustomersController = async (req, res, next) => {
     try {
-        const index = parseInt(req.query.index);
-        const size = parseInt(req.query.size);
-        if (isNaN(index) || isNaN(size) || index <= 0 || size <= 0) {
-            return res.status(httpStatus.BAD_REQUEST).json("index or size is invalid");
+        let pageIndex = parseInt(req.query.pageIndex);
+        let pageSize = parseInt(req.query.pageSize);
+        if (isNaN(pageIndex) || isNaN(pageSize) || pageIndex <= 0 || pageSize <= 0) {
+            pageIndex = config.default_index_pagination;
+            pageSize = config.default_size_pagination;
         }
 
-        const customers = await getListCustomers(index, size);
+        const customers = await getListCustomers(pageIndex, pageSize);
         return res.status(httpStatus.OK).json(customers);
     } catch (error) {
         next(error);

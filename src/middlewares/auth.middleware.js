@@ -1,6 +1,9 @@
 import jwt from "jsonwebtoken";
 import httpStatus from "http-status";
 import config from "../config/index.js";
+import sequelize from "../models/index.js";
+
+const { User, Customer } = sequelize.models;
 
 const getToken = (req) => {
     if (req.headers.authorization && req.headers.authorization.length > 0) {
@@ -20,16 +23,16 @@ const authJWT = async (req, res, next) => {
     jwt.verify(token, config.token_secret, async (error, decoded) => {
         if (error) {
             return res.status(httpStatus.UNAUTHORIZED).json("Failed to authenticate token!");
-        } else {
-            const id = decoded.id;
-
-            req.user = {
-                id,
-                /// ... join more fields
-            };
-
-            return next();
         }
+        const id = decoded.id;
+        const user = await User.findOne({
+            include: [Customer],
+            where: { id },
+        });
+
+        req.user = user;
+
+        return next();
     });
 };
 

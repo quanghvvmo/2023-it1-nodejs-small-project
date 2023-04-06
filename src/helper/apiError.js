@@ -1,5 +1,3 @@
-import httpStatus from "http-status";
-
 class APIError extends Error {
     /**
      * Creates an API error.

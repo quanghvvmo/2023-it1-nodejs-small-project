@@ -23,6 +23,10 @@ const configs = {
         // Security
         token_secret: process.env.TOKEN_SECRET || "ITSASECRET",
         token_expiry: process.env.TOKEN_EXPIRY || "1d",
+
+        // Pagination
+        default_index_pagination: process.env.DEFAULT_INDEX_PAGINATION || 1,
+        default_size_pagination: process.env.DEFAULT_SIZE_PAGINATION || 10,
     },
     development: {
         morgan_format:

@@ -1,6 +1,7 @@
 import APIError from "../helper/apiError.js";
 import httpStatus from "http-status";
 import sequelize from "../models/index.js";
+import { ApiDataResponse, ApiPaginatedResponse } from "../helper/apiResponse.js";
 
 const { User, Order, OrderDetails, Customer } = sequelize.models;
 
@@ -37,7 +38,7 @@ const addOrder = async (currentUserId, payload) => {
         });
     }
 
-    return newOrder.id;
+    return new ApiDataResponse(httpStatus.CREATED, "create success", newOrder);
 };
 
 export { addOrder };
