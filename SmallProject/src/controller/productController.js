@@ -1,84 +1,89 @@
 import productService from '../services/productService'
+import { validateProduct } from "../validations/productValidation"
 
-let checkInput = (inputData) => {
-    let arr = [
-        "name",
-        "description",
-    ];
-    let isValid = true;
-    let element = "";
-    for (let i = 0; i < arr.length; i++) {
-        if (!inputData[arr[i]]) {
-            isValid = false;
-            element = arr[i];
-            break;
+
+const createProduct = async (req, res) => {
+    try {
+        let data = req.body
+        let image = req.file.path
+        const { error, value } = validateProduct.validate(data);
+        if (error) {
+            return res.status(400).json(error.details[0].message)
         }
-    }
-    return {
-        isValid: isValid,
-        element: element,
-    };
-};
-let createProduct = async (req, res) => {
-    let data = req.body
-    let check = checkInput(data);
-    if (check.isValid === false) {
-        return res.status(400).json({
-            errMsg: `Please input: ${check.element}`
-        })
-    }
-    let result = await productService.createProduct(data);
-    if (result.errCode === 0) {
-        return res.status(200).json(result.errMsg);
+        let result = await productService.createProduct(value, image);
+        if (result.errCode === 0) {
+            return res.status(200).json(result);
+        }
+    } catch (error) {
+        return res.status(500).json(error);
     }
 }
-let getListProduct = async (req, res) => {
-    let page = req.query.page;
-    let result = await productService.getListProduct(page);
-    if (result.errCode === 0) {
-        return res.status(200).json(result.products);
+const getListProduct = async (req, res) => {
+    try {
+        const page = req.query.page;
+        let result = await productService.getListProduct(page);
+        if (result.errCode === 0) {
+            return res.status(200).json(result);
+        }
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+
+}
+const getProductbyId = async (req, res) => {
+    try {
+        const productId = req.params.id;
+        let result = await productService.getProductbyId(productId);
+        if (result.errCode === -1) {
+            return res.status(404).json(result.errMsg);
+        } else return res.status(200).json(result.product)
+    } catch (error) {
+        return res.status(500).json(error);
     }
 }
-let getProductbyId = async (req, res) => {
-    let productId = req.params.id;
-    let result = await productService.getProductbyId(productId);
-    if (result.errCode === -1) {
-        return res.status(404).json(result.errMsg);
-    } else return res.status(200).json(result.product)
-}
-let hardDeleteProduct = async (req, res) => {
-    let productId = req.params.id
-    let result = await productService.hardDeleteProduct(productId);
-    if (result.errCode === -1) {
-        return res.status(404).json(result)
-    } else return res.status(200).json(result);
-}
-let softDeleteProduct = async (req, res) => {
-    let productId = req.params.id
-    let result = await productService.softDeleteProduct(productId);
-    if (result.errCode === -1) {
-        return res.status(404).json(result)
-    } else if (result.errCode === 1) {
-        return res.status(200).json(result);
-    } else return res.status(200).json(result);
-}
-let updateProduct = async (req, res) => {
-    let data = req.body;
-    if (!data.id) {
-        return res.status(400).json({
-            errMsg: "Missing product id!"
-        })
+const hardDeleteProduct = async (req, res) => {
+    try {
+        const productId = req.params.id
+        let result = await productService.hardDeleteProduct(productId);
+        if (result.errCode === -1) {
+            return res.status(404).json(result)
+        } else return res.status(200).json(result);
+    } catch (error) {
+        return res.status(500).json(error);
     }
-    let check = checkInput(data);
-    if (check.isValid === false) {
-        return res.status(400).json({
-            errMsg: `Please input: ${check.element}`
-        })
+}
+const softDeleteProduct = async (req, res) => {
+    try {
+        const productId = req.params.id
+        let result = await productService.softDeleteProduct(productId);
+        if (result.errCode === -1) {
+            return res.status(404).json(result)
+        } else if (result.errCode === 1) {
+            return res.status(200).json(result);
+        } else return res.status(200).json(result);
+    } catch (error) {
+        return res.status(500).json(error);
     }
-    let result = await productService.updateProduct(data);
-    if (result.errCode === -1) {
-        return res.status(404).json(result);
-    } else return res.status(200).json(result)
+}
+const updateProduct = async (req, res) => {
+    try {
+        let data = req.body;
+        if (!data.id) {
+            return res.status(400).json({
+                errMsg: "Missing product id!"
+            })
+        }
+        const { error, value } = validateProduct.validate(data);
+        if (error) {
+            return res.status(400).json(error.details[0].message)
+        }
+        let result = await productService.updateProduct(value);
+        if (result.errCode === -1) {
+            return res.status(404).json(result);
+        } else return res.status(200).json(result)
+    } catch (error) {
+        return res.status(500).json(error);
+    }
 }
 module.exports = {
     createProduct: createProduct,

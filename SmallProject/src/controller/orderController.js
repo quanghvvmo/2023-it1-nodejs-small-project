@@ -1,95 +1,92 @@
-import orderService from "../services/orderService"
+import orderService from "../services/orderService";
+import { validateOrder } from "../validations/orderValidation"
 
-let checkInput = (inputData) => {
-    let arr = [
-        "customerid",
-        "price",
-        "tax",
-        "discount",
-        "totalPrice",
-        "isDeleted"
-    ];
-    let isValid = true;
-    let element = "";
-    for (let i = 0; i < arr.length; i++) {
-        if (!inputData[arr[i]]) {
-            isValid = false;
-            element = arr[i];
-            break;
+const createOrder = async (req, res) => {
+    try {
+        let data = req.body;
+        const { error, value } = validateOrder.validate(data);
+        if (error) {
+            return res.status(400).json(error.details[0].message)
         }
-    }
-    return {
-        isValid: isValid,
-        element: element,
-    };
-};
-
-let createOrder = async (req, res) => {
-    let data = req.body;
-    let check = checkInput(data);
-    if (check.isValid === false) {
-        return res.status(400).json({
-            errMsg: `Please input: ${check.element}`
-        })
-    }
-    let result = await orderService.createOrder(data);
-    if (result.errCode === 0) {
-        return res.status(200).json(result.errMsg);
+        let result = await orderService.createOrder(value);
+        if (result.errCode === 0) {
+            return res.status(200).json(result);
+        }
+    } catch (error) {
+        return res.status(500).json(error);
     }
 }
 
-let getAllOrder = async (req, res) => {
-    let page = req.query.page
-    let result = await orderService.getAllOrder(page);
-    if (result.errCode === 0) {
-        return res.status(200).json(result.orders);
+const getAllOrder = async (req, res) => {
+    try {
+        const page = req.query.page
+        let result = await orderService.getAllOrder(page);
+        if (result.errCode === 0) {
+            return res.status(200).json(result);
+        }
+    } catch (error) {
+        return res.status(500).json(error);
     }
-}
-let getOrderbyId = async (req, res) => {
-    let orderId = req.params.id;
-    let result = await orderService.getOrderbyId(orderId);
-    if (result.errCode === -1) {
-        return res.status(404).json(result.errMsg);
-    } else return res.status(200).json(result.order)
 }
 
-let hardDeleteOrder = async (req, res) => {
-    let orderId = req.params.id
-    let result = await orderService.hardDeleteOrder(orderId);
-    if (result.errCode === -1) {
-        return res.status(404).json(result)
-    } else return res.status(200).json(result);
-}
-let softDeleteOrder = async (req, res) => {
-    let orderId = req.params.id
-    let result = await orderService.softDeleteOrder(orderId);
-    if (result.errCode === -1) {
-        return res.status(404).json(result)
-    } else if (result.errCode === 1) {
-        return res.status(200).json(result);
-    } else return res.status(200).json(result);
-}
-let updateOrder = async (req, res) => {
-    let data = req.body;
-    if (!data.id) {
-        return res.status(400).json({
-            errMsg: "Missing Order id!"
-        })
+const getOrderbyId = async (req, res) => {
+    try {
+        const orderId = req.params.id;
+        let result = await orderService.getOrderbyId(orderId);
+        if (result.errCode === -1) {
+            return res.status(404).json(result);
+        } else return res.status(200).json(result)
+    } catch (error) {
+        return res.status(500).json(error);
     }
-    let check = checkInput(data);
-    if (check.isValid === false) {
-        return res.status(400).json({
-            errMsg: `Please input: ${check.element}`
-        })
-    }
-    let result = await orderService.updateOrder(data);
-    if (result.errCode === -1) {
-        return res.status(404).json(result);
-    } else if (result.errCode === 1) {
-        return res.status(400).json(result);
-    } else return res.status(200).json(result)
 }
 
+const hardDeleteOrder = async (req, res) => {
+    try {
+        const orderId = req.params.id
+        let result = await orderService.hardDeleteOrder(orderId);
+        if (result.errCode === -1) {
+            return res.status(404).json(result)
+        } else return res.status(200).json(result);
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+}
+
+const softDeleteOrder = async (req, res) => {
+    try {
+        const orderId = req.params.id
+        let result = await orderService.softDeleteOrder(orderId);
+        if (result.errCode === -1) {
+            return res.status(404).json(result)
+        } else return res.status(200).json(result);
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+}
+
+const updateOrder = async (req, res) => {
+    try {
+        let data = req.body;
+        if (!data.id) {
+            return res.status(400).json({
+                errMsg: "Missing order id!"
+            })
+        }
+        const { error, value } = validateOrder.validate(data);
+        if (error) {
+            return res.status(400).json(error.details[0].message)
+        }
+        let result = await orderService.updateOrder(value);
+        if (result.errCode === -1) {
+            return res.status(404).json(result);
+        } else if (result.errCode === 1) {
+            return res.status(400).json(result);
+        } else return res.status(200).json(result)
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+}
 
 module.exports = {
     createOrder: createOrder,

@@ -11,7 +11,15 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            Product.hasMany(models.OrderDetail, { foreignKey: 'productid', as: 'orderDetailData' })
+            Product.hasMany(models.OrderDetail, {
+                foreignKey: 'productid', as: 'orderDetailData', onDelete: 'CASCADE',
+                onUpdate: 'CASCADE',
+            })
+            Product.hasOne(models.ProductImage, {
+                foreignKey: 'productid',
+                onDelete: 'CASCADE',
+                onUpdate: 'CASCADE',
+            })
 
         }
     };

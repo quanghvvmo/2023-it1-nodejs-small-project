@@ -12,9 +12,13 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             // define association here
             Order.belongsTo(models.Customer, {
-                foreignKey: 'customerid', targetKey: 'id', as: 'orderData'
+                foreignKey: 'customerid', targetKey: 'id', as: 'orderData', onDelete: 'CASCADE',
+                onUpdate: 'CASCADE',
             })
-            Order.hasOne(models.OrderDetail, { foreignKey: 'orderid' })
+            Order.hasOne(models.OrderDetail, {
+                foreignKey: 'orderid', onDelete: 'CASCADE',
+                onUpdate: 'CASCADE',
+            })
         }
     };
     Order.init({

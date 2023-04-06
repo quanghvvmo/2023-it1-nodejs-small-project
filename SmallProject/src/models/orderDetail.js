@@ -11,9 +11,13 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            OrderDetail.belongsTo(models.Order, { foreignKey: 'orderid' })
+            OrderDetail.belongsTo(models.Order, {
+                foreignKey: 'orderid', onDelete: 'CASCADE',
+                onUpdate: 'CASCADE',
+            })
             OrderDetail.belongsTo(models.Product, {
-                foreignKey: 'productid', targetKey: 'id', as: 'orderDetailData'
+                foreignKey: 'productid', targetKey: 'id', as: 'orderDetailData', onDelete: 'CASCADE',
+                onUpdate: 'CASCADE',
             })
 
         }

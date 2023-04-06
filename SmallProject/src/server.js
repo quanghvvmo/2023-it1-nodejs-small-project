@@ -7,6 +7,7 @@ let app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/Images', express.static('./Images'))
 
 connectDB();
 initWebroutes(app);
