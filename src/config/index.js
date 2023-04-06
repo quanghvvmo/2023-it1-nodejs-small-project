@@ -21,6 +21,9 @@ const configs = {
         db_recreate: true,
         db_run_migration: process.env.DB_RUN_MIGRATION != 'false',
         db_run_migration: '',
+        //paginate
+        DEFAULT_LIMIT: 10,
+        DEFAULT_OFFSET:0
     }
 }
 const config = Object.assign(configs.base, configs[env]);

@@ -9,7 +9,7 @@ module.exports = class productImages extends BaseModel {
         model: Product,
         as: 'product'
     }]
-    static association(models) {
-        this.belongsTo(models)
+    static associate(models) {
+        this.belongsTo(models.Product)
     }
 }

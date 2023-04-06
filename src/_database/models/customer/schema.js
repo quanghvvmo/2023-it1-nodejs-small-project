@@ -7,14 +7,6 @@ module.exports = {
         primaryKey:true,
         defaultValue: Sequelize.UUIDV1
     },
-    userID:{
-        type:Sequelize.STRING(36),
-        allowNull:false,
-        references:{
-            model: 'user',
-            key:'id'
-        }
-    },
     paymentMethod:{
         type:Sequelize.INTEGER(10),
         allowNull:true

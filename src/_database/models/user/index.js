@@ -14,7 +14,7 @@ module.exports = class User extends BaseModel {
         }
     ]
     static associate(models){
-        this.hasOne(models.Customer,{foreignKey: 'customerId',targetKey:'id', as:'customer'})
+        this.hasOne(models.Customer)
     }
     
 }

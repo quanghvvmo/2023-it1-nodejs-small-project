@@ -5,6 +5,7 @@ const config = require('../config')
 const { sequelize } = require('../config/database');
 const { migrate } = require('../_utils/migration');
 
+
 class Db {
   constructor() {
     const models = {}
@@ -31,9 +32,10 @@ class Db {
       .authenticate()
       .then(() => {
         console.log(`Connected to database: ${sequelize.config.database}`);
-        return sequelize.sync({ force: config.db_recreate }).then(() => {
+        return sequelize.sync().then(() => {
           if (config.db_run_migration) {
             migrate();
+            
           }
           return sequelize;
         });

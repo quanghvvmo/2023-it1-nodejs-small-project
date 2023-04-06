@@ -1,39 +1,41 @@
 const Sequelize = require('sequelize');
+
 module.exports = {
     id:{
         type:Sequelize.STRING(36),
-        allowNull:false,
         primaryKey:true,
+        allowNull:false,
         defaultValue:Sequelize.UUIDV1
     },
-    customerId:{
+    orderId:{
         type:Sequelize.STRING(36),
         allowNull:false,
-        primaryKey:true,
         references:{
-            model:'user',
+            model:'order',
+            key:'id'
+        }
+    },
+    productId:{
+        type:Sequelize.STRING(36),
+        allowNull:false,
+        references:{
+            model:'product',
             key:'id'
         }
     },
     price:{
-        type:Sequelize.DOUBLE,
-        allowNull:true
+        type:Sequelize.DOUBLE
     },
     tax:{
-        type:Sequelize.DOUBLE,
-        allowNull:true
+        type:Sequelize.DOUBLE
     },
     discount:{
-        type:Sequelize.DOUBLE,
-        allowNull:true
+        type:Sequelize.DOUBLE
     },
     totalPrice:{
-        type:Sequelize.DOUBLE,
-        allowNull:true
+        type:Sequelize.DOUBLE
     },
     isDeleted:{
-        type:Sequelize.INTEGER(1),
-        defaultValue:1
-    },
-    
+        type:Sequelize.BOOLEAN
+    }
 }

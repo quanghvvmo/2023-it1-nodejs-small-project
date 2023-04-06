@@ -1,27 +1,47 @@
 const path = require('path');
 const Umzug = require('umzug');
 const { sequelize } = require('../config/database');
+const sequelizeConfig = require('../../.sequelizerc');
 
 
-const umzug = new Umzug({
-    storage: 'sequelize',
+var migrationsConfig = {
+    storage: "sequelize",
     storageOptions: {
         sequelize: sequelize,
+      // modelName: 'SequelizeMeta' // No need to specify, because this is default behaviour
     },
-
     migrations: {
-        params: [
-            sequelize.getQueryInterface(), // queryInterface
-            sequelize.constructor, // DataTypes
-            function () {
-                throw new Error('Migration tried to use old style "done" callback. Please upgrade to "umzug" and return a promise instead.');
-            }
-        ],
+      params: [
+        sequelize.getQueryInterface(),
+        sequelize.constructor
+      ],
+      truncate: false,
+      path: sequelizeConfig['migrations-path'],
+      pattern: /\.js$/
+    }
+  };
+  
+  var seedsConfig = {
+    storage: "sequelize",
+    storageOptions: {
+        sequelize: sequelize,
+      modelName: 'SequelizeData' // Or whatever you want to name the seeder storage table
     },
-});
+    migrations: {
+      params: [
+        sequelize.getQueryInterface(),
+        sequelize.constructor
+      ],
+      truncate: false,
+      path: sequelizeConfig['seeders-path'],
+      pattern: /\.js$/
+    }
+  };
 
+var migrator = new Umzug(migrationsConfig);
+var seeder = new Umzug(seedsConfig);
 const migrate = () => {
-    return umzug.up();
+    return migrator.up().then(() => seeder.up());
 }
 
 module.exports = {

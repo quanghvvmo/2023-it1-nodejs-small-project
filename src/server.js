@@ -22,11 +22,17 @@ const initSequelize = () => {
             return false;
         });
 };
-
+const initService = () => {
+    const routes = require('./routes')
+    console.log('Init - Register services.');
+    app.use("/api/v1", routes);
+    console.log(`Init - Register services successfully.`);
+    return;
+};
 const startServer = async () => {
     app.listen(config.port, config.host);
     initSequelize();
-    //initService();
+    initService();
     console.log(`Listening on host ${config.host} on port ${config.port} http://${config.host}:${config.port}`);
 };
 

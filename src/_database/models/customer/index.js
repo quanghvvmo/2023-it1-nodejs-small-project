@@ -17,7 +17,7 @@ module.exports = class customer extends BaseModel {
         }
     ]
     static associate(models){
-        this.belongsTo(models.User,{foreignKey: 'customerId',targetKey:'id', as: 'User'});
+        this.belongsTo(models.User);
         this.hasMany(models.Order,{as: 'Order'})
     }
 }

@@ -6,7 +6,8 @@ module.exports = class BaseModel extends Sequelize.Model{
     static schema = {};
     static timestamps = true;
     static include = null;
-
+    static association(models){            
+    }
     /**
      * Initial model
      * *provide documentation and context for the parameter.
@@ -41,5 +42,6 @@ module.exports = class BaseModel extends Sequelize.Model{
             sequelize,
             timestamps: this.timestamps
         })
+        
     }
 }
