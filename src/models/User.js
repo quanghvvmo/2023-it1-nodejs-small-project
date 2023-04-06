@@ -1,47 +1,75 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../dbconfig');
+const bcrypt = require('bcrypt');
 
-module.exports = (sequelize) => {
-    const columns = {
-        id: {
-            type: DataTypes.UUID,
-            primaryKey: true,
-            defaultValue: DataTypes.UUIDV4,
-            allowNull: false
-        },
-        username: {
-            type: DataTypes.STRING,
-            unique: true,
-            allowNull: false
-        },
-        password: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        age: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        email: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        phone: {
-            type: DataTypes.STRING,
-        },
-        address: {
-            type: DataTypes.STRING,
-        },
-        isActive: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: true
-        }
+const User = sequelize.define('User', {
+    id: {
+        type: DataTypes.UUID,
+        primaryKey: true,
+        unique: true,
+        defaultValue: DataTypes.UUIDV4 
+    },
+    username: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false
+    },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    age: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    phone: {
+        type: DataTypes.STRING,
+    },
+    address: {
+        type: DataTypes.STRING,
+    },
+    isActive: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
+    },
+    createdAt: {
+        type: DataTypes.DATE,
+    },
+    updatedAt: {
+        type: DataTypes.DATE,
+    },
+    createdBy: {
+        type: DataTypes.DATE,
+    },
+    updatedBy: {
+        type: DataTypes.DATE,
+    },
+}, {
+    timestamps: false,
+    tableName: 'users',
+});
+
+User.associations = (models) => {
+    User.hasMany(models.Customer, { foreignKey: {
+        name: 'userId',
+        allowNull: false,
+        unique: true,
+    }});
+};
+
+User.beforeSave(async (user, options) => {
+    if (user.changed('password')) {
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(user.password, salt);
     }
+});
 
-    const timestampConfig = {
-        timestamps: true,
-        tableName: 'users'
-    }
-
-    return sequelize.define('User', columns, timestampConfig);
+User.prototype.comparePassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
 }
+
+exports.User = User;
