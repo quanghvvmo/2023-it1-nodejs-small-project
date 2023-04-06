@@ -1,9 +1,8 @@
 import db from "../models/index"
 import { v4 as uuidv4 } from "uuid";
 
-const createProduct = async (data, image) => {
+const createProduct = async (data, file) => {
     let newId = uuidv4();
-    console.log(image);
     const newProduct = await db.Product.create({
         id: newId,
         name: data.name,
@@ -16,13 +15,13 @@ const createProduct = async (data, image) => {
         createBy: data.createBy,
         updateBy: data.updateBy
     })
-    if (image) {
+    if (file && file != "") {
         let imageId = uuidv4();
         const newProductImage = await db.ProductImage.create({
             id: imageId,
             name: data.name,
             productid: newProduct.id,
-            url: image,
+            url: file,
             isDeleted: false
         })
         return ({
@@ -65,10 +64,21 @@ const getListProduct = async (page) => {
 }
 
 const getProductbyId = async (productId) => {
-    let product = await db.Product.findOne({
+    let product = await db.Product.findAll({
         where: {
             id: productId
-        }
+        },
+        include: [
+            {
+                model: db.ProductImage
+            },
+            {
+                model: db.OrderDetail,
+                as: "orderDetailData"
+            }
+        ],
+        raw: true,
+        nest: true
     });
     if (product) {
         return ({
@@ -103,24 +113,18 @@ const hardDeleteProduct = async (productId) => {
 const softDeleteProduct = async (productId) => {
     let product = await db.Product.findOne({
         where: {
-            id: productId
+            id: productId,
+            isDeleted: false
         },
         raw: false
     })
     if (product) {
-        if (product.isDeleted === true) {
-            return ({
-                errCode: 1,
-                errMsg: "The product is already Soft Deleted"
-            })
-        } else {
-            product.isDeleted = 1;
-            await product.save();
-            return ({
-                errCode: 0,
-                errMsg: 'The order is soft deleted',
-            })
-        }
+        product.isDeleted = true;
+        await product.save();
+        return ({
+            errCode: 0,
+            errMsg: 'The product is soft deleted',
+        })
     } else return ({
         errCode: -1,
         errMsg: 'Not found product'

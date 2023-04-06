@@ -4,16 +4,20 @@ import { validateProduct } from "../validations/productValidation"
 
 const createProduct = async (req, res) => {
     try {
-        let data = req.body
-        let image = req.file.path
+        let data = req.body;
+        let file = "";
+        if (!req.file) {
+            file = null;
+        } else {
+            file = req.file.filename;
+        }
+        console.log(file);
         const { error, value } = validateProduct.validate(data);
         if (error) {
             return res.status(400).json(error.details[0].message)
         }
-        let result = await productService.createProduct(value, image);
-        if (result.errCode === 0) {
-            return res.status(200).json(result);
-        }
+        let result = await productService.createProduct(value, file);
+        return res.status(200).json(result);
     } catch (error) {
         return res.status(500).json(error);
     }
@@ -35,8 +39,8 @@ const getProductbyId = async (req, res) => {
         const productId = req.params.id;
         let result = await productService.getProductbyId(productId);
         if (result.errCode === -1) {
-            return res.status(404).json(result.errMsg);
-        } else return res.status(200).json(result.product)
+            return res.status(404).json(result);
+        } else return res.status(200).json(result)
     } catch (error) {
         return res.status(500).json(error);
     }
@@ -58,8 +62,6 @@ const softDeleteProduct = async (req, res) => {
         let result = await productService.softDeleteProduct(productId);
         if (result.errCode === -1) {
             return res.status(404).json(result)
-        } else if (result.errCode === 1) {
-            return res.status(200).json(result);
         } else return res.status(200).json(result);
     } catch (error) {
         return res.status(500).json(error);

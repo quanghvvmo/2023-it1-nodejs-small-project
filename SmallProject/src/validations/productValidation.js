@@ -5,10 +5,10 @@ const validateProduct = Joi.object({
     name: Joi.string().required(),
     description: Joi.string().required(),
     price: Joi.number().greater(0),
-    tax: Joi.number().required().greater(0),
-    discount: Joi.number().required().greater(0),
-    totalPrice: Joi.number().required().greater(0),
-    isDeleted: Joi.boolean().required()
+    tax: Joi.number().greater(0),
+    discount: Joi.number().greater(0),
+    totalPrice: Joi.number().greater(0),
+    isDeleted: Joi.boolean(),
 });
 
 const validateProductimage = Joi.object({
