@@ -1,0 +1,965 @@
+{
+	"info": {
+		"_postman_id": "f48c01d9-1659-4bc3-89a7-4a51d0f455a0",
+		"name": "Small Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20209821"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create-user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "thainv9",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "age",
+									"value": "28",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "thainv9@vmo.dev",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "0965816097",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "Cau Giay, Ha Noi",
+									"type": "text"
+								},
+								{
+									"key": "isActive",
+									"value": "true",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/v1/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/v1/user?page=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"user"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/user/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "f0dc9e02-1ed0-436f-aa4d-cac4a541a35adadasda"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "id",
+									"value": "f0dc9e02-1ed0-436f-aa4d-cac4a541a35a",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "thainv1",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456789",
+									"type": "text"
+								},
+								{
+									"key": "age",
+									"value": "25",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "thainv1@vmo.dev",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "0965816569",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "Nam Dinh",
+									"type": "text"
+								},
+								{
+									"key": "isActive",
+									"value": "0",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/v1/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/user/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "fea1e5a0-27f7-4d6a-b58d-b9555188e318"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active User",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/user/:id/active",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								":id",
+								"active"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "f0dc9e02-1ed0-436f-aa4d-cac4a541a35a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inactive User",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/user/:id/inactive",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								":id",
+								"inactive"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "f0dc9e02-1ed0-436f-aa4d-cac4a541a35a"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "API for User"
+		},
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "Create Customer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "userid",
+									"value": "f24d5e57-ac8d-44f7-8fc9-617635639620",
+									"type": "text"
+								},
+								{
+									"key": "paymentMethod",
+									"value": "01",
+									"type": "text"
+								},
+								{
+									"key": "isActive",
+									"value": "0",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/v1/customer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Customer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/customer?page=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"customer"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customer By Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/v1/customer/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"customer",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "0c2e211c-11de-4456-8f99-ca4c59a0977eeeedsada"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active Customer",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/customer/:id/active",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"customer",
+								":id",
+								"active"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "0c2e211c-11de-4456-8f99-ca4c59a0977e"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inactive Customer",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/customer/:id/inactive",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"customer",
+								":id",
+								"inactive"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "0c2e211c-11de-4456-8f99-ca4c59a0977e"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Customer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/customer/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"customer",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "ef4ed3ad-64ae-42ec-9d26-91c1db653c84"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Customer",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "userid",
+									"value": "fea1e5a0-27f7-4d6a-b58d-b9555188e31",
+									"type": "text"
+								},
+								{
+									"key": "paymentMethod",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "isActive",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "id",
+									"value": "ffc417e5-a22e-4646-8335-0f9b2a9b09c2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/v1/customer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"customer"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "customerid",
+									"value": "18a64e10-442f-44f3-a78f-09e59f68859c",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "dasdas",
+									"type": "text"
+								},
+								{
+									"key": "tax",
+									"value": "0.1",
+									"type": "text"
+								},
+								{
+									"key": "discount",
+									"value": "10.0",
+									"type": "text"
+								},
+								{
+									"key": "isDeleted",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "totalPrice",
+									"value": "45.0",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/v1/order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Order",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get order By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/order/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"order",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5ab6080c-fdf0-4e84-9f38-c98f8e64a952"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Soft Delete Order",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/order/:id/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"order",
+								":id",
+								"delete"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5ab6080c-fdf0-4e84-9f38-c98f8e64a952"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hard Delete Order",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/order/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"order",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "61bc49a5-42f5-4df1-bde7-501dfbff3a70"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "id",
+									"value": "5ab6080c-fdf0-4e84-9f38-c98f8e64a952",
+									"type": "text"
+								},
+								{
+									"key": "customerid",
+									"value": "0c2e211c-11de-4456-8f99-ca4c59a0977e",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "25",
+									"type": "text"
+								},
+								{
+									"key": "tax",
+									"value": "0.1",
+									"type": "text"
+								},
+								{
+									"key": "discount",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "totalPrice",
+									"value": "23.5",
+									"type": "text"
+								},
+								{
+									"key": "isDeleted",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/v1/order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"order"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Create product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Hulk toy",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "The toy made in Japan",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "25.0",
+									"type": "text"
+								},
+								{
+									"key": "tax",
+									"value": "0.1",
+									"type": "text"
+								},
+								{
+									"key": "discount",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "totalPrice",
+									"value": "35",
+									"type": "text"
+								},
+								{
+									"key": "isDeleted",
+									"value": "false",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/v1/product",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/product?page=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"product"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/product/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"product",
+								":id"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "c793cdf6-f601-44d2-8287-bf3c3b5279df"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Soft Delete Product",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/order/:id/product",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"order",
+								":id",
+								"product"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hard Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/product/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"product",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/product",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"product"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
