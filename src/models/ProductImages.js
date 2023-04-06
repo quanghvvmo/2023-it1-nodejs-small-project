@@ -8,13 +8,16 @@ module.exports = (sequelize) => {
             defaultValue: DataTypes.UUIDV4,
             allowNull: false
         },
-        paymentMethod: {
-            type: DataTypes.INTEGER,
-            allowNull: true
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
         },
-        isActive: {
+        url: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        isDeleted: {
             type: DataTypes.BOOLEAN,
-            defaultValue: true
         }
     }
 
@@ -22,5 +25,5 @@ module.exports = (sequelize) => {
         timestamps: true
     }
 
-    return sequelize.define('Customer', columns, timestampConfig);
+    return sequelize.define('ProductImages', columns, timestampConfig);
 }

@@ -30,5 +30,5 @@ module.exports = (sequelize) => {
         timestamps: true
     }
 
-    return sequelize.define('Order', columns, timestampConfig);
+    return sequelize.define('OrderDetail', columns, timestampConfig);
 }

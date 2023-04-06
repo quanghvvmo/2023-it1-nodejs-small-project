@@ -8,6 +8,14 @@ module.exports = (sequelize) => {
             defaultValue: DataTypes.UUIDV4,
             allowNull: false
         },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        description: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         price: {
             type: DataTypes.DOUBLE
         },
@@ -30,5 +38,5 @@ module.exports = (sequelize) => {
         timestamps: true
     }
 
-    return sequelize.define('Order', columns, timestampConfig);
+    return sequelize.define('Product', columns, timestampConfig);
 }
