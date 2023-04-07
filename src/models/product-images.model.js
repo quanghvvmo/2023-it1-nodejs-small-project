@@ -19,7 +19,7 @@ export default (sequelize) => {
         isDeleted: {
             type: DataTypes.INTEGER,
             allowNull: true,
-            defaultValue: 0,
+            defaultValue: false,
         },
     };
 

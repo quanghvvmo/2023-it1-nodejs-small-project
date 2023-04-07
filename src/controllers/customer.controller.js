@@ -27,9 +27,6 @@ const createCustomerController = async (req, res, next) => {
 const getCustomerController = async (req, res, next) => {
     try {
         const customer = await getCustomerDetail(req.params.id);
-        if (!customer) {
-            return res.status(httpStatus.NOT_FOUND).json({ message: "Customer not found" });
-        }
         return res.status(httpStatus.OK).json(customer);
     } catch (error) {
         next(error);
@@ -68,8 +65,8 @@ const updateCustomerController = async (req, res, next) => {
 
 const hardDeleteCustomerController = async (req, res, next) => {
     try {
-        const customerId = await hardDeleteCustomer(req.params.id);
-        return res.status(httpStatus.OK).json(customerId);
+        const customer = await hardDeleteCustomer(req.params.id);
+        return res.status(httpStatus.OK).json(customer);
     } catch (error) {
         next(error);
     }
@@ -77,8 +74,8 @@ const hardDeleteCustomerController = async (req, res, next) => {
 
 const softDeleteCustomerController = async (req, res, next) => {
     try {
-        const customerId = await softDeleteCustomer(req.params.id);
-        return res.status(httpStatus.OK).json(customerId);
+        const customer = await softDeleteCustomer(req.params.id);
+        return res.status(httpStatus.OK).json(customer);
     } catch (error) {
         next(error);
     }

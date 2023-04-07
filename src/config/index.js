@@ -27,6 +27,9 @@ const configs = {
         // Pagination
         default_index_pagination: process.env.DEFAULT_INDEX_PAGINATION || 1,
         default_size_pagination: process.env.DEFAULT_SIZE_PAGINATION || 10,
+
+        // upload
+        produce_images_url: process.env.PRODUCT_IMAGES_URL,
     },
     development: {
         morgan_format:

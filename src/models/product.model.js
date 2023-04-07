@@ -31,6 +31,7 @@ export default (sequelize) => {
         isDeleted: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            defaultValue: false,
         },
         price: {
             type: DataTypes.DOUBLE,

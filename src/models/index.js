@@ -33,8 +33,8 @@ for (const model of models) {
 applyExtraSetup(sequelize);
 
 // sync
-// sequelize.sync({ alter: true }).then(() => {
-//     console.log("Sync successfully.");
-// });
+sequelize.sync().then(() => {
+    console.log("Sync successfully.");
+});
 
 export default sequelize;

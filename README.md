@@ -2,16 +2,20 @@
 
 ## Intro
 
-Small project
+Swagger UI: http://localhost:8080/api-docs
+
+And "API Collection.postman_collection.json" in root folder for import in Postman
 
 ## Techs
+
 Languages: Javascript
 Framework: ExpressJs
 Database: MySQL (Sequelize)
 
 ## To prepare project
 
-Create .env file in root directory with the following format: 
+Create .env file in root directory with the following format:
+
 ```
 HTTP_PORT=
 DB_DATABASE=
@@ -29,4 +33,10 @@ TOKEN_EXPIRY=
 ```shell
 > npm install
 > npm start
+```
+
+## To test
+
+```shell
+> npm test
 ```
