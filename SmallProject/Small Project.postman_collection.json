@@ -19,7 +19,7 @@
 							"urlencoded": [
 								{
 									"key": "username",
-									"value": "thainv9",
+									"value": "thainv1",
 									"type": "text"
 								},
 								{
@@ -34,7 +34,7 @@
 								},
 								{
 									"key": "email",
-									"value": "thainv9@vmo.dev",
+									"value": "thainv1@vmo.dev",
 									"type": "text"
 								},
 								{
@@ -83,7 +83,7 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "http://localhost:8081/api/v1/user?page=1",
+							"raw": "http://localhost:8081/api/v1/user",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -97,7 +97,8 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "1"
+									"value": "1",
+									"disabled": true
 								}
 							]
 						}
@@ -125,7 +126,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "f0dc9e02-1ed0-436f-aa4d-cac4a541a35adadasda"
+									"value": "3af8eace-1599-4104-bd73-6e3dfa6afc59"
 								}
 							]
 						}
@@ -219,7 +220,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "fea1e5a0-27f7-4d6a-b58d-b9555188e318"
+									"value": "68f24408-7795-4c04-80d7-5ca4cfeb0125"
 								}
 							]
 						}
@@ -283,6 +284,35 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/user/:id/inactive",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								":id",
+								"inactive"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"description": "API for User"
@@ -300,17 +330,17 @@
 							"urlencoded": [
 								{
 									"key": "userid",
-									"value": "f24d5e57-ac8d-44f7-8fc9-617635639620",
+									"value": "68f24408-7795-4c04-80d7-5ca4cfeb0125",
 									"type": "text"
 								},
 								{
 									"key": "paymentMethod",
-									"value": "01",
+									"value": "02",
 									"type": "text"
 								},
 								{
 									"key": "isActive",
-									"value": "0",
+									"value": "true",
 									"type": "text"
 								}
 							]
@@ -337,7 +367,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8081/api/v1/customer?page=2",
+							"raw": "http://localhost:8081/api/v1/customer",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -351,7 +381,8 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "2"
+									"value": "1",
+									"disabled": true
 								}
 							]
 						}
@@ -386,7 +417,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "0c2e211c-11de-4456-8f99-ca4c59a0977eeeedsada"
+									"value": "219a2478-8f90-4549-a92f-e5d27d5d3019"
 								}
 							]
 						}
@@ -489,7 +520,7 @@
 							"urlencoded": [
 								{
 									"key": "userid",
-									"value": "fea1e5a0-27f7-4d6a-b58d-b9555188e31",
+									"value": "89ede329-e6f8-4c97-aca9-b2d579d23597",
 									"type": "text"
 								},
 								{
@@ -499,12 +530,12 @@
 								},
 								{
 									"key": "isActive",
-									"value": "0",
+									"value": "false",
 									"type": "text"
 								},
 								{
 									"key": "id",
-									"value": "ffc417e5-a22e-4646-8335-0f9b2a9b09c2",
+									"value": "9ce5f399-35ad-402e-be43-abc867b7303f",
 									"type": "text"
 								}
 							]
@@ -540,12 +571,12 @@
 							"urlencoded": [
 								{
 									"key": "customerid",
-									"value": "18a64e10-442f-44f3-a78f-09e59f68859c",
+									"value": "5aa7adae-4b1e-4a3c-b3d2-2affee3d668e",
 									"type": "text"
 								},
 								{
 									"key": "price",
-									"value": "dasdas",
+									"value": "80",
 									"type": "text"
 								},
 								{
@@ -560,12 +591,12 @@
 								},
 								{
 									"key": "isDeleted",
-									"value": "0",
+									"value": "false",
 									"type": "text"
 								},
 								{
 									"key": "totalPrice",
-									"value": "45.0",
+									"value": "72",
 									"type": "text"
 								}
 							]
@@ -768,17 +799,17 @@
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "Hulk toy",
+									"value": "Gohan",
 									"type": "text"
 								},
 								{
 									"key": "description",
-									"value": "The toy made in Japan",
+									"value": "good",
 									"type": "text"
 								},
 								{
 									"key": "price",
-									"value": "25.0",
+									"value": "28",
 									"type": "text"
 								},
 								{
@@ -788,7 +819,7 @@
 								},
 								{
 									"key": "discount",
-									"value": "5",
+									"value": "1",
 									"type": "text"
 								},
 								{
@@ -874,7 +905,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "c793cdf6-f601-44d2-8287-bf3c3b5279df"
+									"value": "b3d79af4-caaf-4105-886c-0c4f0d0f89aa"
 								}
 							]
 						}
@@ -887,7 +918,7 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8081/api/v1/order/:id/product",
+							"raw": "http://localhost:8081/api/v1/product/:id/delete",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -896,9 +927,9 @@
 							"path": [
 								"api",
 								"v1",
-								"order",
+								"product",
 								":id",
-								"product"
+								"delete"
 							],
 							"variable": [
 								{
@@ -954,6 +985,408 @@
 								"api",
 								"v1",
 								"product"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product Image",
+			"item": [
+				{
+					"name": "Create Product Image",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Goku",
+									"type": "text"
+								},
+								{
+									"key": "productid",
+									"value": "8c2a4370-9b77-4b1b-ac24-64c1f6d9c48e",
+									"type": "text"
+								},
+								{
+									"key": "url",
+									"value": "image-168085682265.jpg",
+									"type": "text"
+								},
+								{
+									"key": "isDeleted",
+									"value": "false",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/v1/productimg",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"productimg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Product Img",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/productimg?page=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"productimg"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/productimg/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"productimg",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "01041e80-fe5e-494c-90f0-f7aa9253af86"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hard Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/productimg/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"productimg",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "01041e80-fe5e-494c-90f0-f7aa9253af86"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Soft Delete",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/productimg/:id/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"productimg",
+								":id",
+								"delete"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5ff4face-f85e-4c97-b16e-f570d8914f7b"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product Img",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "id",
+									"value": "5ff4face-f85e-4c97-b16e-f570d8914f7b",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "ddada",
+									"type": "text"
+								},
+								{
+									"key": "productid",
+									"value": "dasdasas",
+									"type": "text"
+								},
+								{
+									"key": "url",
+									"value": "dadsadas",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/v1/productimg",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"productimg"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order Detail",
+			"item": [
+				{
+					"name": "Create Order Detail",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "orderid",
+									"value": "03d1bd28-ff8a-47b8-ba8e-5ba68c828ff2",
+									"type": "text"
+								},
+								{
+									"key": "productid",
+									"value": "b3d79af4-caaf-4105-886c-0c4f0d0f89aa",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "45",
+									"type": "text"
+								},
+								{
+									"key": "tax",
+									"value": "0.1",
+									"type": "text"
+								},
+								{
+									"key": "discount",
+									"value": "15",
+									"type": "text"
+								},
+								{
+									"key": "totalPrice",
+									"value": "50",
+									"type": "text"
+								},
+								{
+									"key": "isDeleted",
+									"value": "false",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/v1/orderdetail",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"orderdetail"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Order Detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/orderdetail",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"orderdetail"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order Detail By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/orderdetail/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"orderdetail",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order Detail",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/orderdetail",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"orderdetail"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hard Delete Order Detail",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/orderdetail/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"orderdetail",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Soft Delete Order Detail",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/orderdetail/:id/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"orderdetail",
+								":id",
+								"delete"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
 							]
 						}
 					},

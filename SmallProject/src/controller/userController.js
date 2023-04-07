@@ -1,5 +1,5 @@
 import userService from "../services/userService"
-import { validateUser } from "../validations/userValidation";
+import { validateUser, login } from "../validations/userValidation";
 
 const createUser = async (req, res) => {
     try {
@@ -36,7 +36,9 @@ const getUserbyId = async (req, res) => {
         let result = await userService.getUserByid(userId);
         if (result.errCode === -1) {
             return res.status(404).json(result);
-        } else return res.status(200).json(result)
+        } else {
+            return res.status(200).json(result)
+        }
     } catch (error) {
         return res.status(500).json(error);
     }
@@ -96,7 +98,23 @@ const updateUser = async (req, res) => {
         return res.status(500).json(error);
     }
 };
-
+const handleLogin = async (req, res) => {
+    try {
+        const data = req.body;
+        const { error, value } = login.validate(data);
+        if (error) {
+            return res.status(400).json(error.details[0].message)
+        }
+        let result = await userService.handleLogin(value);
+        if (result.errCode === 0) {
+            return res.status(200).json(result);
+        } else if (result.errCode === -1) {
+            return res.status(403).json(result)
+        } else return res.status(400).json(result)
+    } catch (error) {
+        return res.status(500).json(error)
+    }
+}
 
 
 module.exports = {
@@ -107,5 +125,6 @@ module.exports = {
     inactiveUser: inactiveUser,
     deleteUser: deleteUser,
     updateUser: updateUser,
+    handleLogin: handleLogin
 
 }

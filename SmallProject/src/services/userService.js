@@ -1,7 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 import db from "../models/index";
+import jwt from "jsonwebtoken";
 const salt = bcrypt.genSaltSync(10);
+require('dotenv').config();
+
 const hashUserPassword = (password) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -214,6 +217,36 @@ const updateUser = async (data) => {
         errMsg: 'The username is already exsit, Please choose another nick name!'
     })
 }
+const handleLogin = async (data) => {
+    let user = await db.User.findOne({
+        where: {
+            username: data.username
+        }
+    })
+    if (user) {
+        let check = await bcrypt.compareSync(data.password, user.password)
+        if (check) {
+            const token = jwt.sign(
+                { userId: user.id },
+                process.env.SECRET_KEY
+            )
+            return ({
+                user,
+                token,
+                errCode: 0,
+                errMsg: 'Login successful!'
+            })
+        }
+        return ({
+            errCode: 1,
+            errMsg: "Password is wrong!"
+        })
+    }
+    return ({
+        errCode: -1,
+        errMsg: "Your email is not exsit!"
+    })
+}
 
 
 module.exports = {
@@ -224,4 +257,5 @@ module.exports = {
     inactiveUser: inactiveUser,
     deleteUserById: deleteUserById,
     updateUser: updateUser,
+    handleLogin: handleLogin
 }

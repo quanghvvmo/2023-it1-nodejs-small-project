@@ -12,5 +12,9 @@ const validateUser = Joi.object({
     isActive: Joi.boolean().required()
 });
 
+const login = Joi.object({
+    username: Joi.string().required().pattern(USERNAME_REGEX),
+    password: Joi.string().required()
+})
 
-export { validateUser };
+export { validateUser, login };
