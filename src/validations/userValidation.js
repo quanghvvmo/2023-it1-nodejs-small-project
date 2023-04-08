@@ -18,7 +18,7 @@ const userValidation = {
 
     updateUserSchema: Joi.object({
         email: Joi.string().email().pattern(regularExpressions.EMAIL),
-        password: Joi.string().required().pattern(regularExpressions.PASSWORD),
+        password: Joi.string().pattern(regularExpressions.PASSWORD),
         age: Joi.number().greater(0),
         email: Joi.string().email().pattern(regularExpressions.EMAIL),
         phone: Joi.string().pattern(regularExpressions.PHONE),

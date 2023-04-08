@@ -1,76 +1,78 @@
-const customerService = require('../services/customerService');
-const { Customer } = require('../models/Customer');
-const { User } = require('../models/User');
+const customerService = require("../services/customerService");
+const customerValidation = require("../validations/customerValidation");
+const config = require('../config/index');
+const httpStatus = require('http-status');
 
 class CustomerController {
-    async createCustomer(req, res) {
+    createCustomer = async (req, res, next) => {
         try {
-            const { userId } = req.body;
-            const existingUser = await User.findOne({ where: { id: userId }});
-            if(existingUser) {
-                return res.status(404).json({ message: 'User existed' });
+            const { error, value } = customerValidation.createCustomerSchema.validate(req.body);
+            if (error) {
+                return res.status(httpStatus.BAD_REQUEST).json({ message: error.details[0].message });
             }
-            const customer = await customerService.createCustomer({ 
-                userId,
-                isActive: 1,
-                ...req.body
-            });
-            return res.status(201).json(customer);
+    
+            const customer = await customerService.createCustomer(value);
+            return res.status(httpStatus.CREATED).json(customer);
         } catch (error) {
-            return res.status(500).json(error);
+            next(error);
         }
-    }
+    };
 
-    async updateCustomer(req, res) {
+    updateCustomer = async (req, res, next) => {
         try {
-            const { id } = req.body;
-            const existingCustomer = await Customer.findOne({ where: { id }});
-            if(!existingCustomer) {
-                return res.status(404).json({ message: 'Customer not existed' });
+            const { id } = req.params
+            const { error, value } = customerValidation.updateCustomerSchema.validate(req.body);
+            if (error) {
+                return res.status(httpStatus.BAD_REQUEST).json({ message: error.details[0].message });
             }
-            const updateCustomer = customerService.updateCustomer(id, { ...req.body });
-            res.status(200).json(updateCustomer);
+    
+            const customer = await customerService.updateCustomer(id, value);
+            return res.status(httpStatus.OK).json(customer);
         } catch (error) {
-            return res.status(500).json(error);
+            next(error);
         }
-    }
+    };
 
-    async deleteCustomer(req, res) {
+    getCustomerDetail = async (req, res, next) => {
         try {
             const { id } = req.params;
-            const customer = await Customer.findByPk(id);
-            if(!customer) {
-                return res.status(404).json({ message: 'Customer not existed' });
-            }
-            await customerService.deleteCustomer(id);
-            return res.status(200).json({ message: `Deleted user - ${ id }` });
+            const customer = await customerService.getCustomerDetail(id);
+            return res.status(httpStatus.OK).json(customer);
         } catch (error) {
-            return res.status(500).json(error);
+            next(error);
         }
-    }
+    };
 
-    async getListCustomers(req, res) {
+    getListCustomers = async (req, res, next) => {
         try {
-            const { page, limit } = req.query;
-            if (page <= 0 || limit <= 0) {
-                return res.status(404).json({ message: "Parameters aren't accepted" });
-            }
-            const customers = await customerService.getListCustomers(page, limit);
-            return res.status(200).json(customers);
+            const pageIndex = parseInt(req.query.pageIndex) || config.DEFAULT_INDEX_PAGING;
+            const pageSize = parseInt(req.query.pageSize) || config.DEFAULT_SIZE_PAGING;
+            const customers = await customerService.getListCustomers(pageIndex, pageSize);
+            return res.status(httpStatus.OK).json(customers);
         } catch (error) {
-            return res.status(500).json(error);
+            next(error);
         }
-    }
+    };
 
-    async getCustomerDetail(req, res) {
+    hardDeleteCustomer = async (req, res, next) => {
         try {
             const { id } = req.params;
-            const user = await customerService.getCustomerDetail(id);
-            return res.status(200).json(user);
+            const customer = await customerService.hardDeleteCustomer(id);
+            return res.status(httpStatus.OK).json(customer);
         } catch (error) {
-            return res.status(500).json(error);
+            next(error);
         }
-    }
+    };
+    
+    softDeleteCustomer = async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const customer = await customerService.softDeleteCustomer(id);
+            return res.status(httpStatus.OK).json(customer);
+        } catch (error) {
+            next(error);
+        }
+    };
 }
 
 module.exports = new CustomerController();

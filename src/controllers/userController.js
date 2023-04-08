@@ -1,88 +1,101 @@
 const userService = require('../services/userService');
-const { User } = require('../models/User');
+const httpStatus = require('http-status');
+const userValidation = require('../validations/userValidation');
+const config = require('../config/index');
 
 class UserController {
-    async createUser(req, res) {
+    login = async (req, res, next) => {
         try {
-            const { username } = req.body;
-            const existingUser = await User.findOne({ where: { username }});
-            if(existingUser) {
-                return res.status(404).json({ message: 'User existed' });
+            const { error, value } = userValidation.loginSchema.validate(req.body);
+            if (error) {
+                return res.status(httpStatus.BAD_REQUEST).json(error.details[0].message);
             }
-            const user = await userService.createUser({ 
-                ...req.body,
-                isActive: 1,
-                createdAt: new Date()
-            });
-            return res.status(201).json(user);
+    
+            const user = await userService.login(value);
+            return res.status(httpStatus.OK).json({ user });
         } catch (error) {
-            return res.status(500).json(error);
+            next(error);
+        }
+    };
+
+    createUser = async (req, res, next) => {
+        try {
+            const { error, value } = userValidation.createUserSchema.validate(req.body);
+            if (error) {
+                return res.status(httpStatus.BAD_REQUEST).json(error.details[0].message);
+            }
+            const user = await userService.createUser(value);
+            return res.status(httpStatus.CREATED).json({ user });
+        } catch (error) {
+            next(error)
         }
     }
 
-    async loginUser(req, res) {
-        try {
-            const { username, password } = req.body;
-            const user = await User.findOne({ where: { username } });
-            if (!user || !user.comparePassword(password, user.password)) {
-                return res.status(401).json({ message: 'Invalid username or password' });
-            }
-            return res.status(200).json(user);
-        } catch (error) {
-            return res.status(500).json(error);
-        }
-    }
-
-    async updateUser(req, res) {
-        try {
-            const { username } = req.body;
-            const existingUser = await User.findOne({ where: { username }});
-            if(!existingUser) {
-                return res.status(404).json({ message: 'User not existed' });
-            }
-            const updateUser = userService.updateUser(existingUser.id, { ...req.body });
-            res.status(200).json(updateUser);
-        } catch (error) {
-            return res.status(500).json(error);
-        }
-    }
-
-    async deleteUser(req, res) {
+    updateUser = async (req, res, next) => {
         try {
             const { id } = req.params;
-            const user = await User.findByPk(id);
-            if(!user) {
-                return res.status(404).json({ message: 'User not existed' });
+            const { error, value } = userValidation.updateUserSchema.validate(req.body);
+            if (error) {
+                return res.status(httpStatus.BAD_REQUEST).json(error.details[0].message);
             }
-            await userService.deleteUser(id);
-            return res.status(200).json({ message: `Deleted user - ${ id }` });
+    
+            const user = await userService.updateUser(id, value);
+            return res.status(httpStatus.OK).json(user);
         } catch (error) {
-            return res.status(500).json(error);
+            next(error);
         }
-    }
+    };
 
-    async getListUsers(req, res) {
+    inactiveUser = async (req, res, next) => {
         try {
-            const { page, limit } = req.query;
-            if (page <= 0 || limit <= 0) {
-                return res.status(404).json({ message: "Parameters aren't accepted" });
-            }
-            const users = await userService.getListUsers(page, limit);
-            return res.status(200).json(users);
+            const { id } = req.params;
+            const user = await userService.inactiveUser(id);
+            return res.status(httpStatus.OK).json(user);
         } catch (error) {
-            return res.status(500).json(error);
+            next(error);
         }
-    }
+    };
+    
+    activeUser = async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const user = await userService.activeUser(id);
+            return res.status(httpStatus.OK).json(user);
+        } catch (error) {
+            next(error);
+        }
+    };
+    
+    getListUsers = async (req, res, next) => {
+        try {
+            const pageIndex = parseInt(req.query.pageIndex) || config.DEFAULT_INDEX_PAGING;
+            const pageSize = parseInt(req.query.pageSize) || config.DEFAULT_SIZE_PAGING;
+            const users = await userService.getListUsers(pageIndex, pageSize);
+            return res.status(httpStatus.OK).json(users);
+        } catch (error) {
+            next(error);
+        }
+    };
 
-    async getUserDetail(req, res) {
+    getUserDetail = async (req, res, next) => {
         try {
             const { id } = req.params;
             const user = await userService.getUserDetail(id);
-            return res.status(200).json(user);
+            return res.status(httpStatus.OK).json(user);
         } catch (error) {
-            return res.status(500).json(error);
+            next(error);
         }
-    }
+    };
+
+    deleteUser = async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const user = await userService.deleteUser(id);
+            return res.status(httpStatus.OK).json(user);
+        } catch (error) {
+            next(error);
+        }
+    };
 }
 
 module.exports = new UserController();

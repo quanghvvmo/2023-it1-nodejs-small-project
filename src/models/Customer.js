@@ -1,41 +1,26 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../dbconfig');
+const { DataTypes } = require("sequelize");
 
-const Customer = sequelize.define('Customer', {
-    id: {
-        type: DataTypes.UUID,
-        primaryKey: true,
-        unique: true,
-        defaultValue: DataTypes.UUIDV4 
-    },
-    paymentMedthod: {
-        type: DataTypes.INTEGER,
-    },
-    userId: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-          model: 'users',
-          key: 'id'
+module.exports = (sequelize) => {
+    const columns = {
+        id: {
+            type: DataTypes.UUID,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4,
+            allowNull: false
+        },
+        paymentMethod: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
+        isActive: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
         }
-    },
-    isActive: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false
     }
-}, {
-    timestamps: false,
-    tableName: 'customers'
-});
 
-Customer.associations = (models) => {
-    Customer.belongsTo(models.User, { foreignKey: 'userId' });
-    Customer.hasMany(models.Order, { foreignKey: {
-        name: 'customerId',
-        allowNull: false,
-        unique: true,
-    }});
+    const timestampConfig = {
+        timestamps: true
+    }
+
+    return sequelize.define('Customer', columns, timestampConfig);
 }
-
-
-exports.Customer = Customer;

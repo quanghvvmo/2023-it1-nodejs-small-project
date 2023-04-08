@@ -1,94 +1,112 @@
-const { User } = require('../models/User');
-const { Customer } = require('../models/Customer');
+const sequelize = require('../models/dbconfig');
+const { User, Customer } = sequelize.models;
+const APIError = require('../helper/apiError');
+const { ApiResponse, ApiPagingResponse } = require('../helper/apiResponse');
+const userMessage = require('../constants/userMessage');
+const httpStatus = require('http-status');
+const jwt = require('jsonwebtoken');
+const config = require('../config/index');
 
 class UserService {
-    async createUser(data) {
-        try {
-            const user = await User.create({
-                ...data
-            });
-            const userId = user.id;
-            const customer = await Customer.create({
-                userId,
-                isActive: 1
-            });
-            return {
-                user,
-                customer
-            };
-        } catch (error) {
-            throw new Error('Failed to create user');
+    login = async (data) => {
+        const { username, password } = data;
+        const user = await User.findOne({ 
+            where: { username } 
+        });
+        if(!user) {
+            throw new APIError({ message: userMessage.USER_NOT_FOUND, status: httpStatus.NOT_FOUND });
         }
+        if(!user.checkPassword(password, user.password)) {
+            throw new APIError({ message: userMessage.PASSWORDS_DONT_MATCH, status: httpStatus.UNAUTHORIZED });
+        }
+        const id = user.id;
+        const token = jwt.sign({ id }, config.token_secret, { expiresIn: config.token_expiry });
+        return new ApiResponse({ token }, userMessage.LOGIN_SUCCEED, httpStatus.OK);
     }
 
-    async loginUser(data) {
-        try {
-            const username = data.username;
-            const user = await User.findOne({ 
-                where: { username }
-            });
-            const userId = user.id;
-            const customers = await Customer.findAll({
-                where: { userId },
-            });
-            return {
-                user,
-                customers
-            };
-        } catch (error) {
-            throw new Error('Failed to login');
+    createUser = async (data) => {
+        const { username } = data;
+        const currentUser = await User.findOne({ where: { username } });
+        if(currentUser) {
+            throw new APIError({ message: userMessage.DUPLICATE_USERNAME, status: httpStatus.CONFLICT });
         }
+        const user = await User.create(data);
+        return new ApiResponse(user, userMessage.USER_CREATED, httpStatus.CREATED);
     }
 
-    async updateUser(id, data) {
-        try {
-            const [ rows ] = await User.update(data, {
-                where: { id },
-                returning: true
-            });
-            return rows[0];
-        } catch (error) {
-            throw new Error('Failed to update user');
+    updateUser = async (id, data) => {
+        const user = await User.update(data, { where: { id } });
+        if (!user.at(0)) {
+            throw new APIError({ message: userMessage.USER_NOT_FOUND, status: httpStatus.NOT_FOUND });
         }
-    }
+        
+        return new ApiResponse(user, httpStatus.OK, userMessage.USER_UPDATED);
+    };
 
-    async deleteUser(id) {
-        try {
-            const rowsDeleted = await User.destroy({
-                where: { id }
-            });
-            await Customer.destroy({ where: { userId: id }});
-            return rowsDeleted;
-        } catch (error) {
-            throw new Error('Failed to delete user');
+    inactiveUser = async (id) => {
+        const user = await User.update({ isActive: false }, { where: { id} });
+        if (!user.at(0)) {
+            throw new APIError({ message: userMessage.USER_NOT_FOUND, status: httpStatus.NOT_FOUND });
         }
-    }
 
-    async getListUsers(page, limit) {
-        try {
-            const offset = (page - 1) * limit;
-            const users = await User.findAll({
-                limit,
-                offset,
-                include: [{ model: Customer, where: { userId: Sequelize.col('User.id') } }]
-            });
-            return users;
-        } catch (error) {
-            throw new Error('Failed to get list of users');
-        }
-    }
+        return new ApiResponse(user, httpStatus.OK, userMessage.USER_INACTIVE);
+    };
 
-    async getUserDetail(id) {
-        try {
-            const user = await User.findByPk(id);
-            if(!user) {
-                throw new Error('User not exists');
-            }
-            return user;
-        } catch (error) {
-            throw new Error(`Failed to get an user - ${id}`);
+    activeUser = async (id) => {
+        const user = await User.update({ isActive: false }, { where: { id } });
+        if (!user.at(0)) {
+            throw new APIError({ message: userMessage.USER_NOT_FOUND, status: httpStatus.NOT_FOUND });
         }
-    }
+        
+        return new ApiResponse(user, httpStatus.OK, userMessage.USER_ACTIVE);
+    };
+
+    getListUsers = async (pageIndex, pageSize) => {
+        const users = await User.findAll();
+    
+        const numOfUsers = users.length;
+        if (!numOfUsers) {
+            throw new APIError({ message: userMessage.USER_NOT_FOUND, status: httpStatus.NOT_FOUND });
+        }
+    
+        const totalPages = parseInt((numOfUsers + pageSize - 1) / pageSize);
+        if (pageIndex > totalPages) {
+            throw new APIError({ message: userMessage.INVALID_PAGGING, status: httpStatus.BAD_REQUEST });
+        }
+    
+        const start = (pageIndex - 1) * limit;
+        const end = startIndex + pageSize;
+    
+        return new ApiPagingResponse(
+            users.slice(start, end),
+            pageIndex,
+            pageSize,
+            numOfUsers,
+            totalPages,
+        );
+    };
+
+    getUserDetail = async (id) => {
+        const user = await User.findOne({
+            include: [Customer],
+            where: { id },
+        });
+    
+        if (!user) {
+            throw new APIError({ message: userMessage.USER_NOT_FOUND, status: httpStatus.NOT_FOUND });
+        }
+        return user;
+    };
+
+    deleteUser = async (id) => {
+        const user = await User.destroy({ where: { id } });
+        if (!user) {
+            throw new APIError({ message: userMessage.USER_NOT_FOUND, status: httpStatus.NOT_FOUND });
+        }
+    
+        return new ApiResponse(user, httpStatus.OK, userMessage.USER_DELETED);
+    };
+
 }
 
 module.exports = new UserService();
