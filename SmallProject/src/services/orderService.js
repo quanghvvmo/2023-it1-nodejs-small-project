@@ -42,7 +42,8 @@ const getAllOrder = async (page) => {
         orders,
         pageIndex: page,
         pageSize: 5,
-        totalCount: orders.length,
+        totalCount: orders.count,
+        totalPage: Math.round(orders.count / 5),
         errCode: 0,
         errMsg: 'Success',
     })

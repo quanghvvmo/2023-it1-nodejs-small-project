@@ -58,6 +58,10 @@ const getListProduct = async (page) => {
     }
     return ({
         products,
+        pageIndex: page,
+        pageSize: 5,
+        totalCount: products.count,
+        totalPage: Math.round(products.count / 5),
         errCode: 0,
         errMsg: 'Success',
     })

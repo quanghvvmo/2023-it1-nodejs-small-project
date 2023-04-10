@@ -72,12 +72,16 @@ const getAllUsers = async (page) => {
                     model: db.Customer
                 }
             ],
-            raw: false,
+            raw: true,
             nest: true
         })
     }
     return ({
         users,
+        pageIndex: page,
+        pageSize: 5,
+        totalCount: users.count,
+        totalPage: Math.round(users.count / 5),
         errCode: 0,
         errMsg: 'Success',
     })

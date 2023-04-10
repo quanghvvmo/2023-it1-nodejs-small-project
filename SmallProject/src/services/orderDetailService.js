@@ -32,7 +32,7 @@ const getAllOrderDetail = async (page) => {
         });
     } else {
         const offset = (parseInt(page) - 1) * 5 // Set default 1 page has 5 orders, With 1 page we skip 5 objects
-        orders = await db.OrderDetail.findAndCountAll({
+        orderDetails = await db.OrderDetail.findAndCountAll({
             limit: 5,
             offset: offset,
             where: {
@@ -44,7 +44,8 @@ const getAllOrderDetail = async (page) => {
         orderDetails,
         pageIndex: page,
         pageSize: 5,
-        totalCount: orderDetails.length,
+        totalCount: orderDetails.count,
+        totalPage: Math.round(orderDetails.count / 5),
         errCode: 0,
         errMsg: 'Success',
     })

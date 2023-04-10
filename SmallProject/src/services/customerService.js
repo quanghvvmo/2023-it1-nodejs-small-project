@@ -44,9 +44,10 @@ const getAllCustomer = async (page) => {
         customers,
         pageIndex: page,
         pageSize: 5,
-        totalCount: customers.length,
+        totalCount: customers.count,
+        totalPage: Math.round(customers.count / 5),
         errCode: 0,
-        errMsg: 'Success'
+        errMsg: 'Success',
     })
 }
 

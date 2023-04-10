@@ -39,6 +39,10 @@ const getListProductImg = async (page) => {
     }
     return ({
         productImgs,
+        pageIndex: page,
+        pageSize: 5,
+        totalCount: productImgs.count,
+        totalPage: Math.round(productImgs.count / 5),
         errCode: 0,
         errMsg: 'Success',
     })
