@@ -6,7 +6,8 @@ const authMiddleware = require('../middlewares/auth')
 userRouter.post('/user/login',userMethod.login)
 userRouter.get('/users/',authMiddleware,userMethod.getAllUsers)
 userRouter.get('/user/:id',userMethod.getUserDetail)
-userRouter.post('/users',userMethod.createUser)
+userRouter.post('/user',userMethod.createUser)
 userRouter.put('/user/:id',userMethod.updateUser)
 userRouter.delete('user/:id',userMethod.deleteUser)
+
 module.exports = userRouter;

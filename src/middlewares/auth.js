@@ -8,9 +8,10 @@ const verifyToken = (req, res, next) => {
     return res.status(403).send("A token is required for authentication");
   }
   try {
+    console.log(process.env.JWT_SECRET)
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
   } catch (err) {
+    console.log("catch")
     return res.status(401).send("Invalid Token");
   }
   return next();

@@ -18,6 +18,6 @@ module.exports = class orderDetail extends BaseModel {
     ]
     static associate(models){
         this.belongsTo(models.Order)
-        this.belongsTo(models.Product,{as:'product'})
+        this.belongsTo(models.Product)
     }
 }

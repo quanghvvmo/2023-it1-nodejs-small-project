@@ -1,17 +1,18 @@
 const httpStatus = require('http-status')
-const User = require('../../_database/models/user')
 const Customer = require('../../_database/models/customer')
 const config = require('../../config')
+const order = require('../../_database/models/order')
 
  class customer{
     getCustomerDetail = async (req,res,next) => {
         try{
             const Cid = req.params.id || 0
             const customer = await Customer.findOne({
-                include: [customer],
-                where: { id: Cid },
-                
-                
+                include: [{
+                    model:order,
+                    as:'order'
+                }],
+                where: { id: Cid },            
             });    
             return res.json(customer);
         }catch(err){
@@ -26,7 +27,10 @@ const config = require('../../config')
     try{
         const { count , rows  } =  await Customer.findAndCountAll
         ({
-            include: [customer],
+            include: [{
+                model:order,
+                as:'order'
+            }],
             offset,
             limit
           });
@@ -38,6 +42,7 @@ const config = require('../../config')
     }
 }
     createCustomer = async (req,res,next) =>{
+        
         try{
             const result = await Customer.create(req.body)
             res.status(httpStatus.CREATED);
@@ -53,8 +58,11 @@ const config = require('../../config')
             const result = await Customer.update(req.body,{where:{
                 id:req.params.id
             }})
-            res.status(httpStatus.OK);
-            //res.send(result)
+            if (result[0] === 0) {
+                return res.status(404).json({ message: 'customer not found' });
+              }
+              const updatedCustomer = await Customer.findOne({ where: { id:req.params.id } });
+            res.status(httpStatus.OK).json(updatedCustomer);
         }catch(err){
             console.log(err.message);
             next(err);
@@ -62,7 +70,10 @@ const config = require('../../config')
     }
     deleteCustomer = async (req,res,next) => {
         try{
-            await Customer.destroy({where:{id:req.params.id}})
+            const deletedRows = await Customer.destroy({where:{id:req.params.id}});
+            if (deletedRows === 0) {
+                return res.status(404).json({ message: 'Customer not found' });
+              }
             res.status(httpStatus.OK);
             res.send("Delete successfully")
         }catch(err){
@@ -71,3 +82,4 @@ const config = require('../../config')
         }
     }
 }
+module.exports = new customer

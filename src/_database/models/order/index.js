@@ -18,6 +18,6 @@ module.exports = class order extends BaseModel {
     ]
     static associate(models){ 
         this.belongsTo(models.Customer,{as: 'customer'});
-        this.hasOne(models.Order,{as: 'order'});
+        this.hasOne(models.OrderDetail,{as: 'orderDetail'});
     }
 }

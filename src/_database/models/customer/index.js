@@ -18,6 +18,6 @@ module.exports = class customer extends BaseModel {
     ]
     static associate(models){
         this.belongsTo(models.User);
-        this.hasMany(models.Order,{as: 'Order'})
+        this.hasMany(models.Order,{as: 'order'})
     }
 }

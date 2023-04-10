@@ -23,7 +23,11 @@ const configs = {
         db_run_migration: '',
         //paginate
         DEFAULT_LIMIT: 10,
-        DEFAULT_OFFSET:0
+        DEFAULT_OFFSET:0,
+        //seed data
+        seeders: {
+            path: '../seeders'
+          }
     }
 }
 const config = Object.assign(configs.base, configs[env]);
