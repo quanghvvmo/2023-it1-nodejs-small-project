@@ -68,8 +68,8 @@ class UserController {
     
     getListUsers = async (req, res, next) => {
         try {
-            const pageIndex = parseInt(req.query.pageIndex) || config.DEFAULT_INDEX_PAGING;
-            const pageSize = parseInt(req.query.pageSize) || config.DEFAULT_SIZE_PAGING;
+            const pageIndex = parseInt(req.query.pageIndex) || config.default_index_paging;
+            const pageSize = parseInt(req.query.pageSize) || config.default_size_paging;
             const users = await userService.getListUsers(pageIndex, pageSize);
             return res.status(httpStatus.OK).json(users);
         } catch (error) {

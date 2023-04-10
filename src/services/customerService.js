@@ -44,20 +44,20 @@ class CustomerService {
             throw new APIError({ message: customerMessage.CUSTOMER_NOT_FOUND, status: httpStatus.NOT_FOUND });
         }
     
-        const totalPages = parseInt((numOfCustomers + pageSize - 1) / pageSize);
-        if (pageIndex > totalPages) {
+        const totalPage = parseInt((numOfCustomers + pageSize - 1) / pageSize);
+        if (pageIndex > totalPage) {
             throw new APIError({ message: customerMessage.INVALID_PAGGING, status: httpStatus.BAD_REQUEST });
         }
     
-        const start = (pageIndex - 1) * limit;
-        const end = startIndex + pageSize;
+        const start = (pageIndex - 1) * pageSize;
+        const end = start + pageSize;
     
         return new ApiPagingResponse(
             customers.slice(start, end),
             pageIndex,
             pageSize,
             numOfCustomers,
-            totalPages,
+            totalPage,
         );
     };
 

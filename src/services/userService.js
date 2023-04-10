@@ -69,20 +69,21 @@ class UserService {
             throw new APIError({ message: userMessage.USER_NOT_FOUND, status: httpStatus.NOT_FOUND });
         }
     
-        const totalPages = parseInt((numOfUsers + pageSize - 1) / pageSize);
-        if (pageIndex > totalPages) {
+        const totalPage = parseInt((numOfUsers / pageSize) + 1);
+        console.log(69, pageSize, totalPage)
+        if (pageIndex > totalPage) {
             throw new APIError({ message: userMessage.INVALID_PAGGING, status: httpStatus.BAD_REQUEST });
         }
     
-        const start = (pageIndex - 1) * limit;
-        const end = startIndex + pageSize;
+        const start = (pageIndex - 1) * pageSize;
+        const end = start + pageSize;
     
         return new ApiPagingResponse(
             users.slice(start, end),
             pageIndex,
             pageSize,
             numOfUsers,
-            totalPages,
+            totalPage,
         );
     };
 
@@ -99,6 +100,7 @@ class UserService {
     };
 
     deleteUser = async (id) => {
+        await Customer.destroy({ where: { userId: id } });
         const user = await User.destroy({ where: { id } });
         if (!user) {
             throw new APIError({ message: userMessage.USER_NOT_FOUND, status: httpStatus.NOT_FOUND });

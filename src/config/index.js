@@ -12,6 +12,9 @@ const configs = {
         host: process.env.HTTP_HOST || "127.0.0.1",
         port: process.env.HTTP_PORT || 8080,
 
+        //Image
+        product_images_url: process.env.PRODUCT_IMAGES_URL,
+
         // Database
         db_host: process.env.DB_HOST || "127.0.0.1",
         db_port: process.env.DB_PORT || 3306,
@@ -25,7 +28,7 @@ const configs = {
         token_expiry: process.env.TOKEN_EXPIRY || "3d",
 
         // Paging
-        default_index_paging: process.env.DEFAULT_INDEX_PAGING|| 1,
+        default_index_paging: process.env.DEFAULT_INDEX_PAGING || 1,
         default_size_paging: process.env.DEFAULT_SIZE_PAGING || 5,
     },
     development: {
