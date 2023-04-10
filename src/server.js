@@ -13,7 +13,7 @@ app.use(cors());
 const initSequelize = async () => {
     try {
         await sequelize.authenticate();
-        // await sequelize.sync({ force: true });
+        await sequelize.sync({ force: true });
         console.log('Database synchronized successfully');
     } catch (error) {
         console.log("Failed init Sequelize connection:", err);
